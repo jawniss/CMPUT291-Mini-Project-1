@@ -1,0 +1,33 @@
+YT Video:
+https://www.youtube.com/watch?v=pd-0G0MigUA
+
+Login Screen:
+	- ask user if they are registered or would like to
+	IF REGISTERED:
+	- take user input for user/pass
+	- query database to see if 
+		- if match, goto next
+		- if doesn't match, stay same screen and tell them
+	IF NOT REGISTERED:
+	- ask for input: email, name, pwd, city, gender
+	- add row to users table
+	- congratulate them on logging in, send them to login screen
+
+	From here, I think we should ask the user what kind of functionality
+	they would like to use.
+
+FUNCTIONALITIES:
+
+List products:
+	- automatically query database and list all products that are in active sales (meaning that current date < edate)
+	- query should return pid, desc, count(pid) in previews, avg(p.rating), count(pid) in active sales
+		- SORT BY (count(pid) in active sales) DESC
+	- after above query, ask if they would like to make a selection (ask for pid)
+		- given above pid, ask if they want to: write p review, view p reviews, view all active sales related to item sort by (edate - current date) ascending
+			WRITE P REVIEW:
+				- ask for input(rating(float 1-5), rtext(limit to 140 char)), generate rid and use given pid and use current datetime for rdate and user email is reviewer, then add value to previews table
+				- return to list products
+			VIEW P REVIEW:
+				-
+			VIEW ALL ACTIVE SALES WITH PRODUCT IN IT:
+				-
