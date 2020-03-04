@@ -1,6 +1,7 @@
 # CMPUT291-MiniProj1
 
 To do list:
+
   -- LIST PRODUCTS:
     - list prods with sales
     - list product id, description, number of reviews, avg rating, number of active sales of product
@@ -18,10 +19,12 @@ To do list:
           - ordered based on remaining time of sale (sales ending soonest on top)
           
   -- SEARCH FOR SALES:
+  
     - user enters 1 or more keywords, system retrieves all active sales w/ at least one keyword in sales description or product description (if the sale associated with a product)
     - order results in descending order of number distinct search keywords that appear in either description
     
   -- LIST PRODUCTS/SEARCH FOR SALES FOLLOW UP:
+  
     - listings in list prods and saerch for sales should include for each sale:
       - sale description
       - max bid (if there's bid) or reserved price (if no bids exist)
@@ -53,6 +56,7 @@ To do list:
       - list all reviews of seller
       
   -- POST A SALE:
+  
     - prompted for product id
     - sale end date and time
     - sale description, condition, reserved price
@@ -62,6 +66,7 @@ To do list:
       - end date must be in future (valid)
   
   -- SEARCH FOR USERS:
+  
     - user enters keyword, system retrieves all user profiles (including email, name, city) that have keyword in name or email
     - from results, can select user and perform actions:
     
