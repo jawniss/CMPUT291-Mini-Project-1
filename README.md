@@ -3,6 +3,7 @@
 To do list:
 
   -- LIST PRODUCTS:
+  
     - list prods with sales
     - list product id, description, number of reviews, avg rating, number of active sales of product
     - sale is active if sale end date not passed
