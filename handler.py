@@ -146,7 +146,7 @@ class Handler():
         while(1):
             clear()
             print("You are logged in as username: "+self.username)
-            print("\nMain Menu. \nEnter the number of action to perform")
+            print("\nMain Menu. \nEnter the number of the action to perform")
             print("1. List Products: List all products in active sales")
             print("2. Search for Sales: Use a keyword to search specific sales")
             print("3. Post a Sale: Create your own sale")
