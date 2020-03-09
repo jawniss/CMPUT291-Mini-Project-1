@@ -6,7 +6,6 @@ from funcs.py import *
 
 if __name__="__main__":
     print("welcome to our miniproject\n")
-    loginoptionselected=False
-    username=""
 
-    username = selectLoginOption()
+    handler = Handler()
+    handler.selectLoginOption()

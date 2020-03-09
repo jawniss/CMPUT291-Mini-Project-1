@@ -2,11 +2,12 @@ import sqlite3
 from sqlite3 import Error
 from getpass import getpass #hidden input function
 from helper import *
+
 class Handler():
     def __init__(self):
         username=""
         conn = create_connection("miniproject.db")
-    def selectLoginOption(username):
+    def selectLoginOption():
         loginselected = False
         while not loginselected:
             clear()
