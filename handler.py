@@ -7,7 +7,9 @@ class Handler():
     def __init__(self):
         self.prompt ="-->"
         self.username=""
-        self.selectedUser=""
+        self.selecteduser=""
+        self.selectedproduct=""
+        self.selectedsale=""
         self.conn = create_connection("miniproject.db")
 
     def selectLoginOption(self):
@@ -143,8 +145,8 @@ class Handler():
     def mainMenu(self):
         while(1):
             clear()
-            print("You are logged in as Username: "+self.username)
-            print("Main Menu. Enter the number of action to perform")
+            print("You are logged in as username: "+self.username)
+            print("\nMain Menu. \nEnter the number of action to perform")
             print("1. List Products: List all products in active sales")
             print("2. Search for Sales: Use a keyword to search specific sales")
             print("3. Post a Sale: Create your own sale")
@@ -183,57 +185,224 @@ class Handler():
 
     def listProducts(self):
         self.clearandBasicInfo()
-        print("not implemented yet")
-        pass
-    
-    def searchSales(self):
-        self.clearandBasicInfo()
-        print("not implemented yet")
-
-        pass
-
-    def postSale(self):
-        self.clearandBasicInfo()
-        print("not implemented yet")
-
-
-
-    def searchUsers(self):
-        self.clearandBasicInfo()
-        print("Search for Users:")
-        print("\nEnter a keyword to search for matching users")
-        keyword = input(self.prompt)
-
-        if(keyword=="9"):
-            return
-
-        try:
-            pass
-            #TODO query here
-            #select matching users
-        except Error as e:
-            #other error
-            return
-        
-        print("TEMPORARY. IMAGINE THE MATCHING USERS HAVE BEEN DISPLAYED")
-
+        print("All Available Products:")
+        print("TEMPORARY. IMAGINE THE AVAILABLE PRODUCTS HAVE BEEN DISPLAYED\n")
         print("Enter the number of action to perform")
-        print("1. Select user")
-        print("2. Search again")
-
+        print("1. Select product")
+        print("2. Select sale")
         action=""
-        while(action == ""):
+        while (action==""):
             action = input(self.prompt)
-            if(action=="9"):
+            if (action =="9"):
                 return
             elif(action=="1"):
-                self.selectUser()
+                self.selectProduct()
                 return
             elif(action=="2"):
-                action = "whatever"
+                self.selectSale()
+                return
             else:
                 action =""
                 getpass("Invalid command. Press enter to try again.")
+        
+    
+    def selectProduct(self):
+        pid=""
+        while(pid==""):
+            print("Enter the pid of the product you want to select ")
+            pid = input(self.prompt)
+            if (pid=="9"):
+                return
+            try:
+                pass
+                #TODO query here
+                #select valid product
+                nomatch = False
+                if(nomatch):
+                    raise NoMatchError
+            except NoMatchError: 
+                print ("Invalid pid")
+                getpass("Press enter to try again.")
+                pid=""
+                continue
+            except Error as e:
+                #other error
+                return
+            self.selectedproduct = pid
+
+        self.clearandBasicInfo()
+        print("Displaying information for Product ID: " +self.selectedproduct)
+        print("TEMPORARY. IMAGINE PRODUCT INFO IS HERE\n")
+        print("\nEnter the number of action to perform")
+        print("1. Write a review on this product")
+        print("2. List all active sales using this product")
+        print("3. List all current product reviews of this product")
+        action=""
+        while(action==""):
+            action = input(self.prompt)
+            if (action =="9"):
+                return
+            elif(action=="1"):
+                self.writeProductReview()
+                return
+            elif(action=="2"):
+                self.listProductSales()
+                return
+            elif (action=="3"):
+                self.listProductReviews()
+                return
+            else:
+                action =""
+                getpass("Invalid command. Press enter to try again.")
+
+    def writeProductReview(self):
+        self.clearandBasicInfo()
+        getpass("not implemented yet")
+    
+    def listProductSales(self):
+        self.clearandBasicInfo()
+        getpass("not implemented yet")
+
+    def listProductReviews(self):
+        self.clearandBasicInfo()
+        getpass("not implemented yet")
+
+
+    def searchSales(self):
+        while(1):
+            self.clearandBasicInfo()
+            print("Search for Sales:")
+            print("\nEnter a keyword to search for matching sales")
+            keyword = input(self.prompt)
+
+            if(keyword=="9"):
+                return
+
+            try:
+                pass
+                #TODO query here
+                #select matching sales
+            except Error as e:
+                #other error
+                return
+            
+            print("TEMPORARY. IMAGINE THE MATCHING SALES HAVE BEEN DISPLAYED")
+
+            print("Enter the number of action to perform")
+            print("1. Select sales")
+            print("2. Search again")
+
+            action=""
+            while(action == ""):
+                action = input(self.prompt)
+                if(action=="9"):
+                    return
+                elif(action=="1"):
+                    self.selectSale()
+                    return
+                elif(action=="2"):
+                    action = "whatever"
+                else:
+                    action =""
+                    getpass("Invalid command. Press enter to try again.")
+
+    def selectSale(self):
+        selectedvalid = False
+        while not selectedvalid:
+            print("Please enter the sid of the sale you want to select")
+            sale = input(self.prompt)
+            if(sale=="9"):
+                return
+            
+            try:
+                pass
+                #TODO query here
+                #select valid sale
+            except IntegrityError: 
+                print ("Invalid sale")
+                getpass("Press enter to try again.")
+                continue
+            except Error as e:
+                #other error
+                return
+            self.selectedsale = sale
+            selectedvalid=True
+        self.showSale()
+
+    def showSale(self):
+        self.clearandBasicInfo()
+        print("Displaying information for sale: "+ self.selectedsale)
+        print("TEMPORARY. IMAGINE SALE INFORMATION IS BEING DISPLAYED")
+        print("\nEnter the number of action to perform")
+        print("1. Place a bid on this sale")
+        print("2. List all active sales of this seller")
+        print("3. List all current reviews of this seller")
+        print("4. Display information for this seller")
+        action=""
+        while(action==""):
+            action = input(self.prompt)
+            if (action =="9"):
+                return
+            elif(action=="1"):
+                self.placeBid()
+                return
+            elif(action=="2"):
+                self.selectedUser="lister of" +self.selectedsale
+                self.listUserSales()
+                return
+            elif (action=="3"):
+                self.selectedUser="lister of" +self.selectedsale
+                self.listUserReviews()
+                return
+            elif (action=="4"):
+                self.selectedUser="lister of" +self.selectedsale
+                self.showUser()
+                return
+            else:
+                action =""
+                getpass("Invalid command. Press enter to try again.")
+
+    def postSale(self):
+        self.clearandBasicInfo()
+        getpass("not implemented yet")
+
+    def searchUsers(self):
+        while(1):
+            self.clearandBasicInfo()
+            print("Search for Users:")
+            print("\nEnter a keyword to search for matching users")
+            keyword = input(self.prompt)
+
+            if(keyword=="9"):
+                return
+
+            try:
+                pass
+                #TODO query here
+                #select matching users
+            except Error as e:
+                #other error
+                return
+            
+            print("\nTEMPORARY. IMAGINE THE MATCHING USERS HAVE BEEN DISPLAYED")
+
+            print("Enter the number of action to perform")
+            print("1. Select user")
+            print("2. Search again")
+
+            action=""
+            while(action == ""):
+                action = input(self.prompt)
+                if(action=="9"):
+                    return
+                elif(action=="1"):
+                    self.selectUser()
+                    return
+                elif(action=="2"):
+                    action="whatever"
+                else:
+                    action =""
+                    getpass("Invalid command. Press enter to try again.")
 
     
     def selectUser(self):
@@ -257,21 +426,24 @@ class Handler():
                 return
             self.selecteduser = user
             selectedvalid=True
+        self.showUser()
 
-        action =""
-        while action=="":
-            self.clearandBasicInfo()
-            print("Displaying information for username: "+ self.selecteduser)
-            print("TEMPORARY. IMAGINE USER INFORMATION IS BEING DISPLAYED")
-            print("\nEnter the number of action to perform")
-            print("1. Write a review on this user")
-            print("2. List all active sales of this user")
-            print("3. List all current reviews of this user")
+    def showUser(self):
+        self.clearandBasicInfo()
+        print("Displaying information for username: "+ self.selecteduser)
+        print("TEMPORARY. IMAGINE USER INFORMATION IS BEING DISPLAYED")
+        print("\nEnter the number of action to perform")
+        print("1. Write a review on this user")
+        print("2. List all active sales of this user")
+        print("3. List all current reviews of this user")
+        action = ""
+        while (action==""):
             action = input(self.prompt)
+        
             if (action =="9"):
                 return
             elif(action=="1"):
-                self.writeReview()
+                self.writeUserReview()
                 return
             elif(action=="2"):
                 self.listUserSales()
@@ -284,15 +456,18 @@ class Handler():
                 getpass("Invalid command. Press enter to try again.")
 
 
-    def writeReview(self):
+    def writeUserReview(self):
+        self.clearandBasicInfo()
         getpass("not implemented yet")
         pass
     
     def listUserSales(self):
+        self.clearandBasicInfo()
         getpass("not implemented yet")
         pass
         
     def listUserReviews(self):
+        self.clearandBasicInfo()
         getpass("not implemented yet")
         pass
 
