@@ -55,8 +55,48 @@ def checkPasswordExists( conn, password ):
         return false
 
 
-def addUser( conn, username, password ):
+def addUser( conn, newUsername, newPassword ):
     """
-    if making a new user, add them to the database
+    if user doens't exists, add them to the database
     """
-    
+    sql = ''' INSERT INTO users( username, password )
+              VALUES( ?, ? ) '''
+
+    if( checkUsernameExists( conn, newUsername ) == false and checkPasswordExists( conn, newPassword ) == false ):
+        cur = conn.cursor()
+        cur.execute( sql, newUsername, newPassword )
+    # return cur.lastrowid      not sure why do this part, think extra
+
+
+
+
+
+
+
+
+
+
+"""
+def main():
+    database = "C:\sqlite\db\pythonsqlite.db"
+ 
+    # create a database connection
+    conn = create_connection(database)
+    with conn:
+        # create a new project
+        project = ('Cool App with SQLite & Python', '2015-01-01', '2015-01-30');
+        project_id = create_project(conn, project)
+ 
+        # tasks
+        task_1 = ('Analyze the requirements of the app', 1, 1, project_id, '2015-01-01', '2015-01-02')
+        task_2 = ('Confirm with user about the top requirements', 1, 1, project_id, '2015-01-03', '2015-01-05')
+ 
+        # create tasks
+        create_task(conn, task_1)
+        create_task(conn, task_2)
+ 
+ 
+if __name__ == '__main__':
+    main()
+
+"""
