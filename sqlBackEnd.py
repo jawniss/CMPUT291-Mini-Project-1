@@ -82,7 +82,7 @@ def addUser(conn, email, name, pwd, city, gender):
 def searchSale(conn, keyword):
     keyword = (keyword,keyword, )
     cur = conn.cursor()
-    cur.execute("SELECT * FROM sales s where sid in (SELECT sid FROM sales s, products p WHERE s.pid = p.pid AND (s.descr like ? OR p.descr like ?));", keyword)
+    cur.execute("select sid, lister, s.pid, edate, s.descr, cond, rprice from sales s left outer join products p on s.pid = p.pid and (s.descr like ? OR p.descr like ?);", keyword)
     conn.commit()
     result = cur.fetchall()
     for row in result:
@@ -97,23 +97,23 @@ def salePoster(conn, sid, lister, pid, edate, descr, cond, rprice):
     return
 
 
-def checkUsernameExists( conn, email ):
+def checkUsernameExists(conn, email ):
     """
     Query tasks by priority
     :param conn: the Connection object
     :param priority:
     :return:
     """
-    email = (email,)
+    email = (email, )
     cur = conn.cursor()
-    cur.executescript("SELECT email FROM users WHERE name=?", email)
+    cur.execute("SELECT email FROM users WHERE email=?;", email)
  
     existingEmail = cur.fetchall()
  
     if( email == existingEmail ):
-        return true
+        return True
     else:
-        return false
+        return False
 
 
 
