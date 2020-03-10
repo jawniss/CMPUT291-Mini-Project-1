@@ -1,10 +1,8 @@
 # https://www.sqlitetutorial.net/sqlite-python/sqlite-python-select/
 import sqlite3
-from sqlite3 import Error
-
+from sqlite3 import *
 
 # Create connection to the database file
-# followed this tutorial https://www.sqlitetutorial.net/sqlite-python/creating-database/
 def create_connection( db_file ):
     """ create a database connection to the SQLite database
         specified by the db_file
@@ -19,61 +17,103 @@ def create_connection( db_file ):
  
     return conn
 
+def logMeInBro(conn, email, pwd):
+    inputs = (email, pwd, )
+    cur = conn.cursor()
+    cur.execute("SELECT * FROM Users WHERE email = ? and pwd = ?;", inputs)
+    results = cur.fetchall()
+    #if we found nothing matching email/pwd, return false
+    if len(results) == 0:
+        return False
+    else:
+        return True
 
 
 
-def checkUsernameExists( conn, username ):
+
+def checkUsernameExists( conn, name ):
     """
     Query tasks by priority
     :param conn: the Connection object
     :param priority:
     :return:
     """
+    name = (name, )
     cur = conn.cursor()
-    cur.execute("SELECT user.name FROM users WHERE username=?", ( username, ))
+    cur.execute("SELECT user.name FROM users WHERE name=?;", name)
  
-    userUsername = cur.fetchall()
+    userName = cur.fetchall()
  
-    if( userUsername == username ):
-        return true
+    if( name == userName ):
+        return True
     else:
-        return false
+        return False
+
+### i dont think this makes any sense to have??? unless i'm missing something
+# def checkPasswordExists( conn, password ):
+#     """
+#     Query tasks by priority
+#     :param conn: the Connection object
+#     :param priority:
+#     :return:
+#     """
+#     cur = conn.cursor()
+#     cur.execute("SELECT user.password FROM users WHERE password=?", ( password, ))
+ 
+#     userPassword = cur.fetchall()
+ 
+#     if( userPassword == password ):
+#         return true
+#     else:
+#         return false
 
 
-def checkPasswordExists( conn, password ):
+def addUser(conn, email, name, pwd, city, gender):
     """
-    Query tasks by priority
-    :param conn: the Connection object
-    :param priority:
-    :return:
+    if user doesn't exists, add them to the database
     """
+    inputs = (email, name, pwd, city, gender, )
     cur = conn.cursor()
-    cur.execute("SELECT user.password FROM users WHERE password=?", ( password, ))
- 
-    userPassword = cur.fetchall()
- 
-    if( userPassword == password ):
-        return true
-    else:
-        return false
-
-
-def addUser( conn, newUsername, newPassword ):
-    """
-    if user doens't exists, add them to the database
-    """
-    sql = ''' INSERT INTO users( username, password )
-              VALUES( ?, ? ) '''
-
-    if( checkUsernameExists( conn, newUsername ) == false and checkPasswordExists( conn, newPassword ) == false ):
-        cur = conn.cursor()
-        cur.execute( sql, newUsername, newPassword )
+    cur.execute("insert into users values (?, ?, ?, ?, ?);", inputs)
+    conn.commit()
+    return
     # return cur.lastrowid      not sure why do this part, think extra
 
+def searchSale(conn, keyword):
+    keyword = (keyword,keyword, )
+    cur = conn.cursor()
+    cur.execute("select sid, lister, s.pid, edate, s.descr, cond, rprice from sales s left outer join products p on s.pid = p.pid and (s.descr like ? OR p.descr like ?);", keyword)
+    conn.commit()
+    result = cur.fetchall()
+    for row in result:
+        print(row)
+    return
+
+def salePoster(conn, sid, lister, pid, edate, descr, cond, rprice):
+    inputs = (sid, lister, pid, edate, descr, cond, rprice, )
+    cur = conn.cursor()
+    cur.execute("insert into sales values (?, ?, ?, ?, ?, ?, ?);", inputs)
+    conn.commit()
+    return
 
 
-
-
+def checkUsernameExists(conn, email ):
+    """
+    Query tasks by priority
+    :param conn: the Connection object
+    :param priority:
+    :return:
+    """
+    email = (email, )
+    cur = conn.cursor()
+    cur.execute("SELECT email FROM users WHERE email=?;", email)
+ 
+    existingEmail = cur.fetchall()
+ 
+    if( email == existingEmail ):
+        return True
+    else:
+        return False
 
 
 

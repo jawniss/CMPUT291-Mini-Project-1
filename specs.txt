@@ -11,14 +11,16 @@ Login Screen:
 	IF NOT REGISTERED:
 	- ask for input: email, name, pwd, city, gender
 	- add row to users table
-	- congratulate them on logging in, send them to login screen
+	- congratulate them on logging in, send them to main screen
 
-	From here, I think we should ask the user what kind of functionality
-	they would like to use.
+Main Screen:
+	- prompt user to select functionality (list products, search for sales, 1-2 follow up, post a sale, search for user)
+	- note that at any time during the program user inputs "logout" or "exit", we should do that
 
 FUNCTIONALITIES:
 
-List products:
+1. List products:
+	note: if they input "back" goto main screen 
 	- automatically query database and list all products that are in active sales (meaning that current date < edate)
 	- query should return pid, desc, count(pid) in previews, avg(p.rating), count(pid) in active sales
 		- SORT BY (count(pid) in active sales) DESC
@@ -26,8 +28,66 @@ List products:
 		- given above pid, ask if they want to: write p review, view p reviews, view all active sales related to item sort by (edate - current date) ascending
 			WRITE P REVIEW:
 				- ask for input(rating(float 1-5), rtext(limit to 140 char)), generate rid and use given pid and use current datetime for rdate and user email is reviewer, then add value to previews table
-				- return to list products
+				- command line return to list products
 			VIEW P REVIEW:
-				-
+				- given the pid, query database and show all reviews (SELECT * FROM previews WHERE inputPid = p.pid)	
+				- command line return to list products
 			VIEW ALL ACTIVE SALES WITH PRODUCT IN IT:
-				-
+				- take the inputPid, select * from sales where sid is in (select sid from sales where (s.edate - currentDateTime) > 0), sort by edate 
+
+2. Search for sales:
+	note: if they input "back" goto main screen 
+	- take one or more keywords as input and use this to query the database
+	- select * from sales where sid is in (select sid from sales s, products p, where sid = sid, and (s.descr like "%inputKeyword%" or p.descr like "%inputKeyword%"), order by count(how many times the keyword appears in description) descending
+	
+3. 1-2 follow-up:
+	note: if they input "back" goto main screen 
+	- (honestly im not exactly sure what the hell this spec is really saying, hopefully one of you guys do)
+
+4. Post a sale:
+	note: if they input "back" goto main screen 
+	- prompt them for inputs: pid, edate(date & time), descr, cond, rprice. -> for required must be not null
+		- assert that (edate - current date) > 0, else ask for valid edate
+		- pid and rprice are optional. if empty, pid = most recent pid+1 (pid is unique), rprice = 0
+	- once all the required fields entered, ADD VALUE to database
+		- sid = (lastSid +1)
+		- lister = userEmail (i think?)
+
+5. Search for users:
+	note: if they input "back" goto main screen 
+	- take input
+		- select email, name, city from users where (name like "%inputKeyword%" OR email like "%inputKeyword%")
+		- save the above table to use for next part (i think we should prompt them to SEACRCH AGAIN or SELECT USER)
+		SELECT USER:
+		- they select user, use the selected user's email for input
+		- prompt them for next action (write review, list active listings, list reviews of user)
+			WRITE REVIEW:
+				- prompt them for rtext (allow blank or not? char limit), rating (check that it is real btwn 1-5)
+				- fill in reviewer as whoever is logged in, reviewee is inputUser, rdate is current datetime
+				- add VALUE to USERS table
+				- go back to search users prompt
+			LIST ACTIVE LISTINGS: (don't think this is 100% right considering i dont understand functionality 3)
+				- SELECT descr, max(bid) or the rprice (dont know how to handle this one), (edate - currentDateTime)
+				  FROM sales, bids
+				  WHERE s.lister = inputUser
+				  AND s.sid = b.sid 
+				  AND (s.edate - currentDateTime) > 0
+				  GROUP BY sid
+				- return to search users prompt
+			LIST REVIEWS OF USER: (don't think this is 100% right considering i dont understand functionality 3)
+				- SELECT * 
+				  FROM users
+				  WHERE reviewee = inputUser
+
+
+users(email, name, pwd, city, gender)
+products(pid, descr)
+sales(sid, lister, pid, edate, descr, cond, rprice)
+bids(bid, bidder, sid, bdate, amount)
+reviews(reviewer, reviewee, rating, rtext, rdate)
+previews(rid, pid, reviewer, rating, rtext, rdate)
+
+
+
+hello
+				

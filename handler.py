@@ -39,41 +39,29 @@ class Handler():
             clear()
             print("Log In:")
             print("Enter 9 at any time to go back to main menu")
-            print("Please enter your username:")
-            ans = input(self.prompt)
-
-            if(ans == "9"):
-                self.selectLoginOption()
-                return
-            
-            self.username = ans
-
-            sql = "SELECT username FROM users WHERE username = ?"
-            try:
-                pass
-                #check if username exists
-            except Error as e:
-                # something failed
-                print(e)
-                return
-            
-            passw = getpass("Please enter your password:")
-
-            if(passw == "b" or passw == "B"):
+            print("Please enter your email:")
+            email = input(self.prompt)
+            if(email == "9"):
                 self.selectLoginOption()
                 return
 
-            try:
-                pass
-                #TODO query here
-                #check for valid password
-            except IntegrityError: 
-                print ("Invalid password")
-                getpass("Press enter to try again.")
-                continue
-            except Error as e:
-                #other error
-                return
+            print("Please enter your password:")
+            pwd = input(self.prompt)
+            
+            while(not logMeInBro(self.conn, email, pwd)):
+                print("Does not match any user in the database. Try again or go back to main menu:")
+                print("Enter 9 at any time to go back to main menu")
+                print("Please enter your email:")
+                email = input(self.prompt)
+                
+                if(email == "9"):
+                    self.selectLoginOption()
+
+                print("Please enter your password:")
+                pwd = input(self.prompt)
+                
+
+            self.username = email
 
             loggedincorrectly =True
 
@@ -83,71 +71,44 @@ class Handler():
         signedupcorrectly = False
         while not signedupcorrectly:
             clear()
-            password=""
+            pwd=""
             print("Sign Up:")
             print("Enter 9 at any time to go back to main menu")
-            print("Please enter your new username:")
+            print("Please enter your email:")
             ans=input(self.prompt)
 
             if(ans == "9"):
                 self.selectLoginOption()
                 return
 
+            #if the email exists, trap them here until they hand over a unique one
+            while(checkUsernameExists(self.conn, ans)):
+                 print("This email already exists. Go back to log in or enter a different email:")
+                 ans=input(self.prompt)
+                 #if they input 9, they want to go back to main menu
+                 if(ans == "9"):
+                    self.selectLoginOption()
+                    return
             self.username = ans
-            sql = "SELECT username FROM users WHERE username = ?"
-            try:
-                pass
-                #TODO query here
-                #check for valid username
-            except IntegrityError: 
-                print ("That username already exists... ")
-                getpass("Press enter to try again.")
-                continue
-            except Error as e:
-                #other error
-                return
+            email = self.username
 
-            passw = input("Please enter your new password:")
+            pwd = input("Please enter your new password:")
 
-            if(passw == "b" or passw == "B"):
-                self.selectLoginOption()
-                return
-
-            try:
-                pass
-                #TODO query here
-                #check for valid password
-            except IntegrityError: 
-                print ("Invalid password")
-                getpass("Press enter to try again.")
-                continue
-            except Error as e:
-                #other error
-                return
+            # if(passw == "b" or passw == "B"):
+            #     self.selectLoginOption()
+            #     return
 
             name = input("Please enter your name: ")
             gender = input("please enter your gender: ")
             city = input ("Please enter your city: ")
-
-            try:
-                pass
-                #TODO query here
-                #insert user
-            except IntegrityError: 
-                print ("Invalid password")
-                getpass("Press enter to try again.\n")
-                continue
-            except Error as e:
-                #other error
-                return
-
+            addUser(self.conn, email, name, pwd, city, gender)
             signedupcorrectly = True
 
     def mainMenu(self):
         while(1):
             clear()
             print("You are logged in as username: "+self.username)
-            print("\nMain Menu. \nEnter the number of the action to perform")
+            print("\nMain Menu. \nEnter the number of action to perform")
             print("1. List Products: List all products in active sales")
             print("2. Search for Sales: Use a keyword to search specific sales")
             print("3. Post a Sale: Create your own sale")
@@ -273,19 +234,20 @@ class Handler():
         while(1):
             self.clearandBasicInfo()
             print("Search for Sales:")
-            print("\nEnter a keyword to search for matching sales")
-            keyword = input(self.prompt)
+            print("\nEnter keyword(s) to search for matching sales")
+            keyword = "%" + input(self.prompt) + "%"
 
             if(keyword=="9"):
                 return
-
-            try:
-                pass
-                #TODO query here
-                #select matching sales
-            except Error as e:
-                #other error
-                return
+            else:
+                searchSale(self.conn, keyword)
+            # try:
+            #     #TODO query here
+            #     searchSale(self.conn, keyword)
+            #     #select matching sales
+            # except Error as e:
+            #     #other error
+            #     return
             
             print("TEMPORARY. IMAGINE THE MATCHING SALES HAVE BEEN DISPLAYED")
 
@@ -365,7 +327,22 @@ class Handler():
 
     def postSale(self):
         self.clearandBasicInfo()
-        getpass("not implemented yet")
+        pid = input("Enter the PID of product (optional):\n")
+        if pid == "":
+            pid = 42069 #fix this later lol
+        edate = input("When would you like the sale to end?\n")
+        #here while (edate - current date) < 0, prompt them for a valid date
+        descr = input("What is the description of the item?\n")
+        #while (descr == "") ask them for a valid description
+        cond = input("What is the conditon of the item?\n")
+        #while (cond == "") ask them for a valid condition
+        rprice = input("What would you like the reserved price for your sale to be?\n")
+        if rprice == "":
+            rprice = 0
+        sid = 6942012 #fix this later as well, if you try to run it twice itll say that sid isnt unique, which it isnt
+        salePoster(self.conn, sid, self.username, pid, edate, descr, cond, rprice)
+        
+        # getpass("not implemented yet")
 
     def searchUsers(self):
         while(1):
@@ -378,8 +355,10 @@ class Handler():
                 return
 
             try:
-                pass
-                #TODO query here
+                # pass
+                # checkUsernameExists(conn, keyword)
+                print(checkUsernameExists(self.conn, keyword))
+
                 #select matching users
             except Error as e:
                 #other error
