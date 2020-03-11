@@ -411,8 +411,7 @@ class Handler():
                 pass
                 #TODO query here
                 #select valid email
-                user = selectOneUser( self.conn, email )
-                useremail = user[0]
+                useremail = selectOneUser( self.conn, email )[0]
                 # useremail = ''.join(user)
                 print( useremail )
                 # characters_to_remove = "()',"
@@ -427,7 +426,7 @@ class Handler():
             except Error as e:
                 #other error
                 return
-            self.selecteduser = user
+            self.selecteduser = useremail
             selectedvalid=True
         self.showUser()
         
