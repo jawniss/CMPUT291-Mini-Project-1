@@ -357,19 +357,16 @@ class Handler():
                 return
 
             try:
-<<<<<<< HEAD
                 # TODO query that selects all matching email, name or city, use the LIKE 
                 # function in the query. Then print everything that is a match
 
 
                 # checkUsernameExists(conn, keyword) is not good for this implementation
                 #print("user exists: "+checkUsernameExists(self.conn, keyword))
-=======
                 # pass
                 # checkUsernameExists(conn, keyword)
                 # print(checkUsernameExists(self.conn, keyword))
                 searchUsers( self.conn, keyword )
->>>>>>> 4cd97a8c294827ccfd5b80957555be48f2dde1fa
 
                 #select matching users
             except Error as e:
@@ -410,7 +407,7 @@ class Handler():
                 pass
                 #TODO query here
                 #select valid email
-                user = selectOneUser( self.conn, email );
+                user = selectOneUser( self.conn, email )
                 useremail = user[0]
                 # useremail = ''.join(user)
                 print( useremail )
