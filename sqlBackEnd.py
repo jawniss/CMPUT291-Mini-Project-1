@@ -143,27 +143,14 @@ def selectOneUser( conn, email ):
     return stringofusername
 
 
-"""
-def main():
-    database = "C:\sqlite\db\pythonsqlite.db"
- 
-    # create a database connection
-    conn = create_connection(database)
-    with conn:
-        # create a new project
-        project = ('Cool App with SQLite & Python', '2015-01-01', '2015-01-30');
-        project_id = create_project(conn, project)
- 
-        # tasks
-        task_1 = ('Analyze the requirements of the app', 1, 1, project_id, '2015-01-01', '2015-01-02')
-        task_2 = ('Confirm with user about the top requirements', 1, 1, project_id, '2015-01-03', '2015-01-05')
- 
-        # create tasks
-        create_task(conn, task_1)
-        create_task(conn, task_2)
- 
- 
-if __name__ == '__main__':
-    main()
+def showUserInfo( conn, useremail ):
+    tempemail = '%' + useremail + '%'
+    useremail = ( tempemail, )
+    cur = conn.cursor()
+    cur.execute( "SELECT * FROM users WHERE (email LIKE ?);", useremail )    
+    conn.commit()
+    result = cur.fetchall()
+    for row in result:
+        print(row)
 
-"""
+    return

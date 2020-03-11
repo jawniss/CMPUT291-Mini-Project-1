@@ -415,10 +415,12 @@ class Handler():
             self.selecteduser = user
             selectedvalid=True
         self.showUser()
+        
 
     def showUser(self):
         self.clearandBasicInfo()
         print("Displaying information for email: "+ self.selecteduser)
+        showUserInfo( self.conn, self.selecteduser )
         print("TEMPORARY. IMAGINE USER INFORMATION IS BEING DISPLAYED")
         print("\nEnter the number of action to perform")
         print("1. Write a review on this user")
@@ -447,6 +449,7 @@ class Handler():
     def writeUserReview(self):
         self.clearandBasicInfo()
         getpass("not implemented yet")
+
         pass
     
     def listUserSales(self):
