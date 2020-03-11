@@ -31,20 +31,20 @@ def logMeIn(conn, email, pwd):
 
 
 
-def checkUsernameExists( conn, name ):
+def checkEmailExists( conn, name ):
     """
-    Query tasks by priority
+    check if email already exists
     :param conn: the Connection object
-    :param priority:
-    :return:
+    :param name: the name to check for
+    :return: whether the name already exists or not
     """
     name = (name, )
     cur = conn.cursor()
-    cur.execute("SELECT user.name FROM users WHERE name=?;", name)
+    cur.execute("SELECT users.email FROM users WHERE email=?;", name)
  
-    userName = cur.fetchall()
+    email = cur.fetchall()[0]
  
-    if( name == userName ):
+    if( name == email ):
         return True
     else:
         return False
@@ -70,7 +70,7 @@ def checkUsernameExists( conn, name ):
 
 def addUser(conn, email, name, pwd, city, gender):
     """
-    if user doesn't exists, add them to the database
+    if user doesn't exist, add them to the database
     """
     inputs = (email, name, pwd, city, gender, )
     cur = conn.cursor()

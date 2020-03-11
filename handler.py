@@ -71,13 +71,13 @@ class Handler():
             pwd=""
             print("Sign Up:")
             print("Enter 9 at any time to go back to main menu")
-            print("Please enter your email:")
+            print("Please enter your new email:")
             ans=input(self.prompt)
 
             if(ans == "9"):
                 self.selectLoginOption()
                 return
-            signedupcorrectly = checkUsernameExists(self.conn,ans)
+            signedupcorrectly = not checkEmailExists(self.conn,ans)
             if signedupcorrectly:
                 self.email = ans
                 email = self.email

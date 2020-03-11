@@ -7,10 +7,8 @@
 -- previews(rid, pid, reviewer, rating, rtext, rdate)
 -- endorses(rid, endorser)
 
-drop table if exists endorses;
 drop table if exists previews;
 drop table if exists reviews;
-drop table if exists items;
 drop table if exists bids;
 drop table if exists sales;
 drop table if exists products;
