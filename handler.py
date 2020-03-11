@@ -40,30 +40,25 @@ class Handler():
             print("Log In:")
             print("Enter 9 at any time to go back to main menu")
             print("Please enter your email:")
+
             email = input(self.prompt)
             if(email == "9"):
                 self.selectLoginOption()
                 return
 
             print("Please enter your password:")
-            pwd = input(self.prompt)
-            
-            while(not logMeIn(self.conn, email, pwd)):
-                print("Does not match any user in the database. Try again or go back to main menu:")
-                print("Enter 9 at any time to go back to main menu")
-                print("Please enter your email:")
-                email = input(self.prompt)
-                
-                if(email == "9"):
-                    self.selectLoginOption()
+            pwd = getpass(self.prompt)
+            if(pwd == "9"):
+                self.selectLoginOption()
+                return
 
-                print("Please enter your password:")
-                pwd = input(self.prompt)
-                
-
-            self.username = email
-
-            loggedincorrectly =True
+            loggedincorrectly = logMeIn(self.conn,email,pwd)
+            if loggedincorrectly:
+                self.username = email
+                loggedincorrectly =True
+            else:
+                print("Does not match any user in the database.")
+                getpass("Press enter to try again")
 
     # create new account, make sure username is unique
     # automatically log in 
