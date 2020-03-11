@@ -11,11 +11,14 @@ class Handler():
         self.selecteduser=""
         self.selectedproduct=""
         self.selectedsale=""
-        self.conn = create_connection("miniproject.db")
+        self.conn = ""
         
 
     def selectLoginOption(self):
         while 1:
+            clear()
+            databasefilename = input("Please input name of database file: ")
+            self.conn = create_connection(databasefilename)
             clear()
             print("Welcome! Please select your login options")
             print("1. Log in: (Already have an account)")
