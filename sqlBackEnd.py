@@ -116,7 +116,32 @@ def checkUsernameExists(conn, email ):
         return False
 
 
+def searchUsers( conn, keyword ):
+    tempkeyword = '%' + keyword + '%'
+    keyword = ( tempkeyword, tempkeyword, )
 
+    cur = conn.cursor()
+    cur.execute( "SELECT email, name, city FROM users WHERE (name LIKE ? OR email LIKE ?);", keyword )
+    conn.commit()
+    result = cur.fetchall()
+    for row in result:
+        print(row)
+    return 
+
+
+def selectOneUser( conn, email ):
+    tempemail = '%' + email + '%'
+    email = ( tempemail, )
+    cur = conn.cursor()
+    cur.execute( "SELECT email FROM users WHERE (email LIKE ?);", email )    
+    conn.commit()
+
+    selecteduser = cur.fetchall()
+    
+    print( "Selected User: " )
+    for row in selecteduser:
+        print(row)
+    return selecteduser
 
 
 """
