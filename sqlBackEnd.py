@@ -2,7 +2,7 @@
 import sqlite3
 from sqlite3 import *
 from datetime import datetime
-
+#test
 import random
 
 # Create connection to the database file
@@ -87,7 +87,8 @@ def listAllProductsWithSales( conn ):
     currentdate = datetime.now()
     inputs = ( currentdate, )
     cur = conn.cursor()
-    cur.execute("select products.pid, products.descr, count(DISTINCT previews.pid), AVG(previews.rating) from sales, previews, products WHERE products.pid = previews.pid AND ( CAST(strftime('%s', ?)  AS  integer) <= CAST(strftime('%s', sales.edate)  AS  integer) );", inputs )
+    # cur.execute("select products.pid, products.descr, count(DISTINCT previews.pid), AVG(previews.rating) from sales, previews, products WHERE products.pid = previews.pid AND ( CAST(strftime('%s', ?)  AS  integer) <= CAST(strftime('%s', sales.edate)  AS  integer) );", inputs )
+    cur.execute("select products.pid, products.descr, count(DISTINCT previews.pid), AVG(previews.rating) from sales, previews, products WHERE products.pid = previews.pid AND products.pid IN (SELECT sales.pid FROM sales WHERE ( CAST(strftime('%s', ?)  AS  integer) <= CAST(strftime('%s', sales.edate)  AS  integer) ));", inputs)
     conn.commit()
     result = cur.fetchall()
     for row in result:
