@@ -7,7 +7,7 @@ from sqlBackEnd import *
 class Handler():
     def __init__(self):
         self.prompt ="-->"
-        self.username=""
+        self.email=""
         self.selecteduser=""
         self.selectedproduct=""
         self.selectedsale=""
@@ -54,13 +54,13 @@ class Handler():
 
             loggedincorrectly = logMeIn(self.conn,email,pwd)
             if loggedincorrectly:
-                self.username = email
+                self.email = email
                 loggedincorrectly =True
             else:
                 print("Does not match any user in the database.")
                 getpass("Press enter to try again")
 
-    # create new account, make sure username is unique
+    # create new account, make sure email is unique
     # automatically log in 
     def signUp(self):
         signedupcorrectly = False
@@ -75,34 +75,26 @@ class Handler():
             if(ans == "9"):
                 self.selectLoginOption()
                 return
+            signedupcorrectly = checkUsernameExists(self.conn,ans)
+            if signedupcorrectly
+                self.email = ans
+                email = self.email
 
-            #if the email exists, trap them here until they hand over a unique one
-            while(checkUsernameExists(self.conn, ans)):
-                 print("This email already exists. Go back to log in or enter a different email:")
-                 ans=input(self.prompt)
-                 #if they input 9, they want to go back to main menu
-                 if(ans == "9"):
-                    self.selectLoginOption()
-                    return
-            self.username = ans
-            email = self.username
+                pwd = input("Please enter your new password:")
 
-            pwd = input("Please enter your new password:")
+                # if(passw == "b" or passw == "B"):
+                #     self.selectLoginOption()
+                #     return
 
-            # if(passw == "b" or passw == "B"):
-            #     self.selectLoginOption()
-            #     return
-
-            name = input("Please enter your name: ")
-            gender = input("please enter your gender: ")
-            city = input ("Please enter your city: ")
-            addUser(self.conn, email, name, pwd, city, gender)
-            signedupcorrectly = True
+                name = input("Please enter your name: ")
+                gender = input("please enter your gender: ")
+                city = input ("Please enter your city: ")
+                addUser(self.conn, email, name, pwd, city, gender)
 
     def mainMenu(self):
         while(1):
             clear()
-            print("You are logged in as username: "+self.username)
+            print("You are logged in as email: "+self.email)
             print("\nMain Menu. \nEnter the number of action to perform")
             print("1. List Products: List all products in active sales")
             print("2. Search for Sales: Use a keyword to search specific sales")
@@ -136,7 +128,7 @@ class Handler():
 
     def clearandBasicInfo(self):
         clear()
-        print("You are logged in as Username: "+self.username)
+        print("You are logged in as Username: "+self.email)
         print("Enter 9 at any time to go back to Main Menu\n")
         return
 
@@ -335,7 +327,7 @@ class Handler():
         if rprice == "":
             rprice = 0
         sid = 6942012 #fix this later as well, if you try to run it twice itll say that sid isnt unique, which it isnt
-        salePoster(self.conn, sid, self.username, pid, edate, descr, cond, rprice)
+        salePoster(self.conn, sid, self.email, pid, edate, descr, cond, rprice)
         
         # getpass("not implemented yet")
 
@@ -383,7 +375,7 @@ class Handler():
     def selectUser(self):
         selectedvalid = False
         while not selectedvalid:
-            print("Please enter the username of the user you want to select")
+            print("Please enter the email of the user you want to select")
             user = input(self.prompt)
             if(user=="9"):
                 return
@@ -391,9 +383,9 @@ class Handler():
             try:
                 pass
                 #TODO query here
-                #select valid username
+                #select valid email
             except IntegrityError: 
-                print ("Invalid username")
+                print ("Invalid email")
                 getpass("Press enter to try again.")
                 continue
             except Error as e:
@@ -405,7 +397,7 @@ class Handler():
 
     def showUser(self):
         self.clearandBasicInfo()
-        print("Displaying information for username: "+ self.selecteduser)
+        print("Displaying information for email: "+ self.selecteduser)
         print("TEMPORARY. IMAGINE USER INFORMATION IS BEING DISPLAYED")
         print("\nEnter the number of action to perform")
         print("1. Write a review on this user")
