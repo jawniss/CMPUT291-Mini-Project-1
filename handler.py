@@ -524,14 +524,16 @@ class Handler():
     def listUserSales(self):
         self.clearandBasicInfo()
         listSalesOfSelectedUser( self.conn, self.selecteduser )
+        getpass("\nPress enter go to back to main menu")
+        return
 
-        pass
         
     def listUserReviews(self):
         self.clearandBasicInfo()
         listReviewsOfSelectedUser( self.conn, self.selecteduser )
-        
-        pass
+        getpass("\nPress enter go to back to main menu")
+        return
+
 
     def placeBid(self):
         self.clearandBasicInfo()

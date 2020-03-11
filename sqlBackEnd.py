@@ -162,6 +162,7 @@ def salePoster(conn, sid, lister, pid, edate, descr, cond, rprice):
     cur.execute("insert into sales values (?, ?, ?, ?, ?, ?, ?);", inputs)
     conn.commit()
     return
+
 def searchUsers( conn, keyword ):
     tempkeyword = '%' + keyword + '%'
     keyword = ( tempkeyword, tempkeyword, )
