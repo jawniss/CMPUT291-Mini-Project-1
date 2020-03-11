@@ -530,14 +530,16 @@ class Handler():
     def listUserSales(self):
         self.clearandBasicInfo()
         listSalesOfSelectedUser( self.conn, self.selecteduser )
+        getpass("\nPress enter go to back to main menu")
+        return
 
-        pass
         
     def listUserReviews(self):
         self.clearandBasicInfo()
         listReviewsOfSelectedUser( self.conn, self.selecteduser )
-        
-        pass
+        getpass("\nPress enter go to back to main menu")
+        return
+
 
     def placeBid(self):
         self.clearandBasicInfo()
@@ -565,7 +567,6 @@ class Handler():
         sid = 6942012 #fix this later as well, if you try to run it twice itll say that sid isnt unique, which it isnt
         salePoster(self.conn, sid, self.email, pid, edate, descr, cond, rprice)
         
-        # getpass("not implemented yet")
 
 
 
