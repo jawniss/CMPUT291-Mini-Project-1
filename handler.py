@@ -48,7 +48,7 @@ class Handler():
             print("Please enter your password:")
             pwd = input(self.prompt)
             
-            while(not logMeInBro(self.conn, email, pwd)):
+            while(not logMeIn(self.conn, email, pwd)):
                 print("Does not match any user in the database. Try again or go back to main menu:")
                 print("Enter 9 at any time to go back to main menu")
                 print("Please enter your email:")

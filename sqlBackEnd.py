@@ -17,7 +17,7 @@ def create_connection( db_file ):
  
     return conn
 
-def logMeInBro(conn, email, pwd):
+def logMeIn(conn, email, pwd):
     inputs = (email, pwd, )
     cur = conn.cursor()
     cur.execute("SELECT * FROM Users WHERE email = ? and pwd = ?;", inputs)
