@@ -163,15 +163,27 @@ def addUserReview( conn, rtext, rating, reviewer, reviewee ):
     return
 
 
+# def timeRemaining( edate, selecteduser ):
+
+
+
+
 def listSalesOfSelectedUser( conn, selecteduser ):
     # need to change to follow point 3
     currentdate = datetime.now()
+    # timeRemaining( edate )
 
     email = '%' + selecteduser + '%'
-    inputs = ( email, currentdate )
+    inputs = ( currentdate, email, currentdate, )
     cur = conn.cursor()
-    cur.execute( "SELECT * FROM sales WHERE (lister LIKE ? AND CAST(strftime('%s', ?)  AS  integer) <= CAST(strftime('%s', edate)  AS  integer) );", inputs )    
+    cur.execute( "SELECT descr, amount FROM sales, bids WHERE (lister LIKE ? AND CAST(strftime('%s', ?)  AS  integer) <= CAST(strftime('%s', edate)  AS  integer) AND sales.sid = bids.sid );", inputs )    
     conn.commit()
     result = cur.fetchall()
+    # print(len(result))
+
+    if len(result) == 0:
+        cur.execute( "SELECT descr, rprice FROM sales WHERE (lister LIKE ? AND CAST(strftime('%s', ?)  AS  integer) <= CAST(strftime('%s', edate)  AS  integer) );", inputs )    
+        conn.commit()
+        result = cur.fetchall()
     for row in result:
         print(row)
