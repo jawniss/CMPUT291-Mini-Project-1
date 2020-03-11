@@ -9,6 +9,9 @@ from os import system, name
 # import sleep to show output for some time period 
 from time import sleep 
 
+import string
+import random
+
 # clear function taken from https://www.geeksforgeeks.org/clear-screen-python/
 # define our clear function 
 def clear(): 
@@ -30,3 +33,10 @@ def create_connection(db_file):
     except Error as e:
         print(e)
     return conn
+
+
+# from https://stackoverflow.com/a/2782272
+def randomKey():
+    lst = [random.choice(string.ascii_letters + string.digits) for n in xrange(4)]
+    key = "".join(lst)
+    return str

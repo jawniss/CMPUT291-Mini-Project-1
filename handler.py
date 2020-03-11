@@ -236,7 +236,7 @@ class Handler():
         while(1):
             self.clearandBasicInfo()
             print("Search for Sales:")
-            print("\nEnter keyword(s) to search for matching sales")
+            print("\nEnter keyword(s) separated by spaces to search for matching sales")
             keyword = "%" + input(self.prompt) + "%"
 
             if(keyword=="9"):
@@ -330,8 +330,9 @@ class Handler():
     def postSale(self):
         self.clearandBasicInfo()
         pid = input("Enter the PID of product (optional):\n")
+
         if pid == "":
-            pid = 42069 #fix this later lol
+            pid = "NULL"
         edate = input("When would you like the sale to end?\n")
         #here while (edate - current date) < 0, prompt them for a valid date
         descr = input("What is the description of the item?\n")
@@ -363,15 +364,11 @@ class Handler():
 
                 # checkUsernameExists(conn, keyword) is not good for this implementation
                 #print("user exists: "+checkUsernameExists(self.conn, keyword))
-<<<<<<< HEAD
                 # pass
                 # checkUsernameExists(conn, keyword)
                 # print(checkUsernameExists(self.conn, keyword))
                 searchUsers( self.conn, keyword )
 
-=======
-                searchUsers( self.conn, keyword )
->>>>>>> 29531069cc226dad24783fbf33b55bcb463a539e
                 #select matching users
             except Error as e:
                 getpass(e)
