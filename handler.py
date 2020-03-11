@@ -23,9 +23,11 @@ class Handler():
             signup=input(self.prompt)
             if (signup== "1"):
                 self.logIn()
+                self.mainMenu()
                 return
             elif (signup=="2"):
                 self.signUp()
+                self.mainMenu()
                 return
             elif(signup=="3"):
                 return
@@ -57,7 +59,7 @@ class Handler():
                 self.email = email
                 loggedincorrectly =True
             else:
-                print("Does not match any user in the database.")
+                print("Sorry, wrong email or password")
                 getpass("Press enter to try again")
 
     # create new account, make sure email is unique
@@ -76,20 +78,31 @@ class Handler():
                 self.selectLoginOption()
                 return
             signedupcorrectly = checkUsernameExists(self.conn,ans)
-            if signedupcorrectly
+            if signedupcorrectly:
                 self.email = ans
                 email = self.email
 
-                pwd = input("Please enter your new password:")
-
-                # if(passw == "b" or passw == "B"):
-                #     self.selectLoginOption()
-                #     return
+                pwd = getpass("Please enter your new password:")
+                if pwd=="9":
+                    self.selectLoginOption()
+                    return
 
                 name = input("Please enter your name: ")
+                if name=="9":
+                    self.selectLoginOption()
+                    return
                 gender = input("please enter your gender: ")
+                if gender=="9":
+                    self.selectLoginOption()
+                    return
                 city = input ("Please enter your city: ")
+                if city=="9":
+                    self.selectLoginOption()
+                    return
                 addUser(self.conn, email, name, pwd, city, gender)
+            else:
+                print("Sorry, that email is already being used")
+                getpass("Press enter to try again")
 
     def mainMenu(self):
         while(1):
@@ -118,6 +131,7 @@ class Handler():
                 sure = input(self.prompt)
                 if (sure =="y" or sure =="Y"):
                     self.selectLoginOption()
+                    return
             elif (selected == "6"):
                 print("Are you sure you want to quit? Y/N")
                 sure = input(self.prompt)

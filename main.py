@@ -6,4 +6,3 @@ if __name__=="__main__":
 
     handler = Handler()
     handler.selectLoginOption()
-    handler.mainMenu()
