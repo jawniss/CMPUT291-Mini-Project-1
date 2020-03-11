@@ -164,6 +164,7 @@ def addUserReview( conn, rtext, rating, reviewer, reviewee ):
 
 
 def listSalesOfSelectedUser( conn, selecteduser ):
+    # need to change to follow point 3
     currentdate = datetime.now()
 
     email = '%' + selecteduser + '%'
