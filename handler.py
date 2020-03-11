@@ -12,6 +12,7 @@ class Handler():
         self.selectedproduct=""
         self.selectedsale=""
         self.conn = create_connection("miniproject.db")
+        
 
     def selectLoginOption(self):
         while 1:
