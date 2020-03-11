@@ -137,11 +137,10 @@ def selectOneUser( conn, email ):
     conn.commit()
 
     selecteduser = cur.fetchall()
+    emailtuple = selecteduser[0]
+    stringofusername = ''.join( emailtuple )
     
-    print( "Selected User: " )
-    for row in selecteduser:
-        print(row)
-    return selecteduser
+    return stringofusername
 
 
 """
