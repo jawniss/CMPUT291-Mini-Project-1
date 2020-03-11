@@ -408,13 +408,7 @@ class Handler():
                 pass
                 #TODO query here
                 #select valid email
-                useremail = selectOneUser( self.conn, email )[0]
-                # useremail = ''.join(user)
-                print( useremail )
-                # characters_to_remove = "()',"
-                # for character in characters_to_remove:
-                #     useremail = useremail.replace(character, "")
-                # print( useremail )
+                useremail = selectOneUser( self.conn, email )
 
             except IntegrityError: 
                 print ("Invalid email")
@@ -476,7 +470,8 @@ class Handler():
     
     def listUserSales(self):
         self.clearandBasicInfo()
-        getpass("not implemented yet")
+        listSalesOfSelectedUser( self.conn, self.selecteduser )
+
         pass
         
     def listUserReviews(self):

@@ -62,6 +62,17 @@ def addUser(conn, email, name, pwd, city, gender):
     return
     # return cur.lastrowid      not sure why do this part, think extra
 
+
+def listAllProductsWithSales( conn ):
+    currentdate = datetime.now()
+    cur = conn.cursor()
+    cur.execute("select sid, lister, s.pid, edate, s.descr, cond, rprice from sales s left outer join products p on s.pid = p.pid and (s.descr like ? OR p.descr like ?);", keyword)
+    conn.commit()
+    result = cur.fetchall()
+    for row in result:
+        print(row)
+
+
 def searchSale(conn, keyword):
     keyword = (keyword,keyword, )
     cur = conn.cursor()
@@ -140,16 +151,23 @@ def showUserInfo( conn, useremail ):
 
 
 def addUserReview( conn, rtext, rating, reviewer, reviewee ):
-    print("3")
     rdate = datetime.today().strftime('%Y-%m-%d')
-    print("4")
     inputs = ( reviewer, reviewee, rating, rtext, rdate )
-    print("5")
     cur = conn.cursor()
-    print("6")
     cur.execute("insert into reviews values (?, ?, ?, ?, ?);", inputs)
-    print("7")
     conn.commit()
-    print("8")
 
     return
+
+
+def listSalesOfSelectedUser( conn, selecteduser ):
+    currentdate = datetime.now()
+
+    email = '%' + selecteduser + '%'
+    inputs = ( email, currentdate )
+    cur = conn.cursor()
+    cur.execute( "SELECT * FROM sales WHERE (lister LIKE ? AND CAST(strftime('%s', ?)  AS  integer) <= CAST(strftime('%s', edate)  AS  integer) );", inputs )    
+    conn.commit()
+    result = cur.fetchall()
+    for row in result:
+        print(row)
