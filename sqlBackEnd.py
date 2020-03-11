@@ -156,12 +156,12 @@ def searchSale(conn, keyword):
     return
 
 def salePoster(conn, sid, lister, pid, edate, descr, cond, rprice):
+    edate = datetime.now() + timedelta(days=int(edate))
     inputs = (sid, lister, pid, edate, descr, cond, rprice, )
     cur = conn.cursor()
-    cur.execute("insert into sales values (?, ?, ?, datetime('now','+? days'), ?, ?, ?);", inputs)
+    cur.execute("insert into sales values (?, ?, ?, ?, ?, ?, ?);", inputs)
     conn.commit()
     return
-
 def searchUsers( conn, keyword ):
     tempkeyword = '%' + keyword + '%'
     keyword = ( tempkeyword, tempkeyword, )
