@@ -1,6 +1,7 @@
 # https://www.sqlitetutorial.net/sqlite-python/sqlite-python-select/
 import sqlite3
 from sqlite3 import *
+from datetime import datetime
 
 # Create connection to the database file
 def create_connection( db_file ):
@@ -48,24 +49,6 @@ def checkEmailExists( conn, name ):
         return True
     else:
         return False
-
-### i dont think this makes any sense to have??? unless i'm missing something
-# def checkPasswordExists( conn, password ):
-#     """
-#     Query tasks by priority
-#     :param conn: the Connection object
-#     :param priority:
-#     :return:
-#     """
-#     cur = conn.cursor()
-#     cur.execute("SELECT user.password FROM users WHERE password=?", ( password, ))
- 
-#     userPassword = cur.fetchall()
- 
-#     if( userPassword == password ):
-#         return true
-#     else:
-#         return false
 
 
 def addUser(conn, email, name, pwd, city, gender):
@@ -137,34 +120,36 @@ def selectOneUser( conn, email ):
     conn.commit()
 
     selecteduser = cur.fetchall()
+    emailtuple = selecteduser[0]
+    stringofusername = ''.join( emailtuple )
     
-    print( "Selected User: " )
-    for row in selecteduser:
+    return stringofusername
+
+
+def showUserInfo( conn, useremail ):
+    tempemail = '%' + useremail + '%'
+    useremail = ( tempemail, )
+    cur = conn.cursor()
+    cur.execute( "SELECT * FROM users WHERE (email LIKE ?);", useremail )    
+    conn.commit()
+    result = cur.fetchall()
+    for row in result:
         print(row)
-    return selecteduser
+
+    return
 
 
-"""
-def main():
-    database = "C:\sqlite\db\pythonsqlite.db"
- 
-    # create a database connection
-    conn = create_connection(database)
-    with conn:
-        # create a new project
-        project = ('Cool App with SQLite & Python', '2015-01-01', '2015-01-30');
-        project_id = create_project(conn, project)
- 
-        # tasks
-        task_1 = ('Analyze the requirements of the app', 1, 1, project_id, '2015-01-01', '2015-01-02')
-        task_2 = ('Confirm with user about the top requirements', 1, 1, project_id, '2015-01-03', '2015-01-05')
- 
-        # create tasks
-        create_task(conn, task_1)
-        create_task(conn, task_2)
- 
- 
-if __name__ == '__main__':
-    main()
+def addUserReview( conn, rtext, rating, reviewer, reviewee ):
+    print("3")
+    rdate = datetime.today().strftime('%Y-%m-%d')
+    print("4")
+    inputs = ( reviewer, reviewee, rating, rtext, rdate )
+    print("5")
+    cur = conn.cursor()
+    print("6")
+    cur.execute("insert into reviews values (?, ?, ?, ?, ?);", inputs)
+    print("7")
+    conn.commit()
+    print("8")
 
-"""
+    return

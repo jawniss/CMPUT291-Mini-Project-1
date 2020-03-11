@@ -363,11 +363,15 @@ class Handler():
 
                 # checkUsernameExists(conn, keyword) is not good for this implementation
                 #print("user exists: "+checkUsernameExists(self.conn, keyword))
+<<<<<<< HEAD
                 # pass
                 # checkUsernameExists(conn, keyword)
                 # print(checkUsernameExists(self.conn, keyword))
                 searchUsers( self.conn, keyword )
 
+=======
+                searchUsers( self.conn, keyword )
+>>>>>>> 29531069cc226dad24783fbf33b55bcb463a539e
                 #select matching users
             except Error as e:
                 getpass(e)
@@ -423,13 +427,15 @@ class Handler():
             except Error as e:
                 #other error
                 return
-            self.selecteduser = "TempEmail"
+            self.selecteduser = user
             selectedvalid=True
         self.showUser()
+        
 
     def showUser(self):
         self.clearandBasicInfo()
         print("Displaying information for email: "+ self.selecteduser)
+        showUserInfo( self.conn, self.selecteduser )
         print("TEMPORARY. IMAGINE USER INFORMATION IS BEING DISPLAYED")
         print("\nEnter the number of action to perform")
         print("1. Write a review on this user")
@@ -457,7 +463,19 @@ class Handler():
 
     def writeUserReview(self):
         self.clearandBasicInfo()
-        getpass("not implemented yet")
+        # getpass("not implemented yet")
+        validrtext = False
+        while not validrtext:
+            rtext = ""
+            rtext = input( "Please input your review text (20 characters or less)" )
+            if len( rtext ) <= 20:
+                validrtext = True
+            else:
+                print( "Review too long, please try again" )
+            # later can put an if thing saying pls try again
+        rating = float(input( "Please input your rating (1-5)"))
+        addUserReview( self.conn, rtext, rating, self.email, self.selecteduser )
+
         pass
     
     def listUserSales(self):
