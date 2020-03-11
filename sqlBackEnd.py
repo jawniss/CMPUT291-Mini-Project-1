@@ -32,8 +32,6 @@ def logMeIn(conn, email, pwd):
         return True
 
 
-
-
 def checkEmailExists( conn, name ):
     """
     check if email already exists
@@ -51,6 +49,18 @@ def checkEmailExists( conn, name ):
     email = cur.fetchall()[0]
  
     if( name == email ):
+        return True
+    else:
+        return False
+
+def checkProductExists(conn,pid):
+    pid = (pid,)
+    cur = conn.cursor()
+    cur.execute("SELECT pid FROM products WHERE pid = ?;",pid)
+    if (len(cur.fetchall())==0):
+        return False
+    product = cur.fetchall()[0]
+    if (product == pid):
         return True
     else:
         return False
@@ -158,7 +168,6 @@ def checkUsernameExists(conn, email ):
         return True
     else:
         return False
-
 
 def searchUsers( conn, keyword ):
     tempkeyword = '%' + keyword + '%'
