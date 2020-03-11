@@ -38,6 +38,6 @@ def create_connection(db_file):
 # from https://stackoverflow.com/a/2782272
 # returns a string of 4 random characters
 def randomKey():
-    lst = [random.choice(string.ascii_letters + string.digits) for n in xrange(4)]
+    lst = [random.choice(string.ascii_letters + string.digits) for n in range(4)]
     key = "".join(lst)
-    return str
+    return key

@@ -31,7 +31,6 @@ def logMeIn(conn, email, pwd):
     else:
         return True
 
-
 def checkEmailExists( conn, name ):
     """
     check if email already exists
@@ -65,6 +64,18 @@ def checkProductExists(conn,pid):
     else:
         return False
 
+def checkSaleExists(conn,sid):
+    sid = (sid,)
+    cur = conn.cursor()
+    cur.execute("SELECT sid FROM sales WHERE sid = ?;",sid)
+    all = cur.fetchall()
+    if (len(all)==0):
+        return False
+    sale = all[0]
+    if (sale == sid):
+        return True
+    else:
+        return False
 
 def addUser(conn, email, name, pwd, city, gender):
     """
