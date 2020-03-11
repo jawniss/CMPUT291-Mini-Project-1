@@ -359,7 +359,8 @@ class Handler():
             try:
                 # pass
                 # checkUsernameExists(conn, keyword)
-                print(checkUsernameExists(self.conn, keyword))
+                # print(checkUsernameExists(self.conn, keyword))
+                searchUsers( self.conn, keyword )
 
                 #select matching users
             except Error as e:
@@ -391,14 +392,23 @@ class Handler():
         selectedvalid = False
         while not selectedvalid:
             print("Please enter the email of the user you want to select")
-            user = input(self.prompt)
-            if(user=="9"):
+            email = input(self.prompt)
+            if(email=="9"):
                 return
             
             try:
                 pass
                 #TODO query here
                 #select valid email
+                user = selectOneUser( self.conn, email );
+                useremail = user[0]
+                # useremail = ''.join(user)
+                print( useremail )
+                # characters_to_remove = "()',"
+                # for character in characters_to_remove:
+                #     useremail = useremail.replace(character, "")
+                # print( useremail )
+
             except IntegrityError: 
                 print ("Invalid email")
                 getpass("Press enter to try again.")
@@ -406,7 +416,7 @@ class Handler():
             except Error as e:
                 #other error
                 return
-            self.selecteduser = user
+            self.selecteduser = "TempEmail"
             selectedvalid=True
         self.showUser()
 
