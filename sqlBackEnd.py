@@ -3,6 +3,8 @@ import sqlite3
 from sqlite3 import *
 from datetime import datetime
 
+import random
+
 # Create connection to the database file
 def create_connection( db_file ):
     """ create a database connection to the SQLite database
@@ -76,6 +78,30 @@ def listAllProductsWithSales( conn ):
     inputs = ( currentdate, )
     cur = conn.cursor()
     cur.execute("select products.pid, products.descr, count(DISTINCT previews.pid), AVG(previews.rating) from sales, previews, products WHERE products.pid = previews.pid AND ( CAST(strftime('%s', ?)  AS  integer) <= CAST(strftime('%s', sales.edate)  AS  integer) );", inputs )
+    conn.commit()
+    result = cur.fetchall()
+    for row in result:
+        print(row)
+
+    return
+
+
+def addProductReview( conn, rtext, rating, reviewer, pid ):
+    rdate = datetime.today().strftime('%Y-%m-%d')
+    rid = random.randint(0, 10000)
+    inputs = ( rid, pid, reviewer, rating, rtext, rdate, )
+    cur = conn.cursor()
+    cur.execute("insert into previews values (?, ?, ?, ?, ?, ?);", inputs)
+    conn.commit()
+
+    return
+
+
+def showProductInfo( conn, pid ):
+    tempproduct = '%' + pid + '%'
+    pid = ( tempproduct, )
+    cur = conn.cursor()
+    cur.execute( "SELECT * FROM products WHERE (pid LIKE ?);", pid )    
     conn.commit()
     result = cur.fetchall()
     for row in result:
@@ -163,7 +189,7 @@ def showUserInfo( conn, useremail ):
 
 def addUserReview( conn, rtext, rating, reviewer, reviewee ):
     rdate = datetime.today().strftime('%Y-%m-%d')
-    inputs = ( reviewer, reviewee, rating, rtext, rdate )
+    inputs = ( reviewer, reviewee, rating, rtext, rdate, )
     cur = conn.cursor()
     cur.execute("insert into reviews values (?, ?, ?, ?, ?);", inputs)
     conn.commit()

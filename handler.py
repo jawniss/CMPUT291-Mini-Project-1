@@ -157,7 +157,9 @@ class Handler():
     def listProducts(self):
         self.clearandBasicInfo()
         print("All Available Products:")
+
         listAllProductsWithSales( self.conn )
+        
         print("TEMPORARY. IMAGINE THE AVAILABLE PRODUCTS HAVE BEEN DISPLAYED\n")
         # TODO query the db for all products functionality 1
         print("Enter the number of action to perform")
@@ -197,6 +199,9 @@ class Handler():
 
         self.clearandBasicInfo()
         print("Displaying information for Product ID: " +self.selectedproduct)
+
+        showProductInfo( self.conn, self.selectedproduct )
+        
         print("TEMPORARY. IMAGINE PRODUCT INFO IS HERE\n")
         print("\nEnter the number of action to perform")
         print("1. Write a review on this product")
@@ -208,7 +213,17 @@ class Handler():
             if (action =="9"):
                 return
             elif(action=="1"):
-                self.writeProductReview()
+                validrtext = False
+                while not validrtext:
+                    rtext = ""
+                    rtext = input( "Please input your product review text (20 characters or less)" )
+                    if len( rtext ) <= 20:
+                        validrtext = True
+                    else:
+                        print( "Review too long, please try again" )
+            # later can put an if thing saying pls try again
+                rating = float(input( "Please input your rating (1-5)"))
+                addProductReview( self.conn, rtext, rating, self.email, self.selectedproduct )
                 return
             elif(action=="2"):
                 self.listProductSales()
