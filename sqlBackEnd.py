@@ -158,7 +158,7 @@ def searchSale(conn, keyword):
 def salePoster(conn, sid, lister, pid, edate, descr, cond, rprice):
     inputs = (sid, lister, pid, edate, descr, cond, rprice, )
     cur = conn.cursor()
-    cur.execute("insert into sales values (?, ?, ?, ?, ?, ?, ?);", inputs)
+    cur.execute("insert into sales values (?, ?, ?, datetime('now','+? days'), ?, ?, ?);", inputs)
     conn.commit()
     return
 
