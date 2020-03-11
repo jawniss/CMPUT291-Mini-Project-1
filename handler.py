@@ -329,15 +329,23 @@ class Handler():
 
     def postSale(self):
         self.clearandBasicInfo()
-        pid = input("Enter the PID of product (optional):\n")
+        print("Enter the PID of product (optional):")
+        pid = input(self.prompt)
 
         if pid == "":
-            pid = "NULL"
-        edate = input("When would you like the sale to end?\n")
+            pid = None
+        elif pid =="9":
+            return
+        edate = input("When would you like the sale to end?")
+
+        if edate == "9":
+            return
         #here while (edate - current date) < 0, prompt them for a valid date
         descr = input("What is the description of the item?\n")
+
         #while (descr == "") ask them for a valid description
         cond = input("What is the conditon of the item?\n")
+
         #while (cond == "") ask them for a valid condition
         rprice = input("What would you like the reserved price for your sale to be?\n")
         if rprice == "":
