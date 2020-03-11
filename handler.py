@@ -44,6 +44,7 @@ class Handler():
             print("Please enter your email:")
 
             email = input(self.prompt)
+            email = email.lower()
             if(email == "9"):
                 self.selectLoginOption()
                 return
@@ -202,7 +203,6 @@ class Handler():
 
         showProductInfo( self.conn, self.selectedproduct )
 
-        print("TEMPORARY. IMAGINE PRODUCT INFO IS HERE\n")
         print("\nEnter the number of action to perform")
         print("1. Write a review on this product")
         print("2. List all active sales using this product")
@@ -267,8 +267,6 @@ class Handler():
             # except Error as e:
             #     #other error
             #     return
-            
-            print("TEMPORARY. IMAGINE THE MATCHING SALES HAVE BEEN DISPLAYED")
 
             print("Enter the number of action to perform")
             print("1. Select sales")
@@ -314,7 +312,6 @@ class Handler():
     def showSale(self):
         self.clearandBasicInfo()
         print("Displaying information for sale: "+ self.selectedsale)
-        print("TEMPORARY. IMAGINE SALE INFORMATION IS BEING DISPLAYED") #TODO display this 
         print("\nEnter the number of action to perform")
         print("1. Place a bid on this sale")
         print("2. List all active sales of this seller")
@@ -433,8 +430,6 @@ class Handler():
                 getpass(e)
                 #other error
                 return
-            
-            print("\nTEMPORARY. IMAGINE THE MATCHING USERS HAVE BEEN DISPLAYED")
 
             print("Enter the number of action to perform")
             print("1. Select user")
@@ -485,7 +480,6 @@ class Handler():
         self.clearandBasicInfo()
         print("Displaying information for email: "+ self.selecteduser)
         showUserInfo( self.conn, self.selecteduser )
-        print("TEMPORARY. IMAGINE USER INFORMATION IS BEING DISPLAYED")
         print("\nEnter the number of action to perform")
         print("1. Write a review on this user")
         print("2. List all active sales of this user")
@@ -564,8 +558,3 @@ class Handler():
             rprice = 0
         sid = 6942012 #fix this later as well, if you try to run it twice itll say that sid isnt unique, which it isnt
         salePoster(self.conn, sid, self.email, pid, edate, descr, cond, rprice)
-        
-        # getpass("not implemented yet")
-
-
-
