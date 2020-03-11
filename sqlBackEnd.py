@@ -1,7 +1,7 @@
 # https://www.sqlitetutorial.net/sqlite-python/sqlite-python-select/
 import sqlite3
 from sqlite3 import *
-from datetime import datetime
+from datetime import *  
 #test
 import random
 
@@ -55,7 +55,7 @@ def checkEmailExists( conn, name ):
 def checkProductExists(conn,pid):
     pid = (pid,)
     cur = conn.cursor()
-    cur.execute("SELECT pid FROM products WHERE pid = ?;",pid)
+    cur.execute("SELECT pid FROM products WHERE pid like ?;",pid)
     if (len(cur.fetchall())==0):
         return False
     product = cur.fetchall()[0]
@@ -67,12 +67,25 @@ def checkProductExists(conn,pid):
 def checkSaleExists(conn,sid):
     sid = (sid,)
     cur = conn.cursor()
-    cur.execute("SELECT sid FROM sales WHERE sid = ?;",sid)
+    cur.execute("SELECT sid FROM sales WHERE sid like ?;",sid)
     all = cur.fetchall()
     if (len(all)==0):
         return False
     sale = all[0]
     if (sale == sid):
+        return True
+    else:
+        return False
+
+def checkBidExists(conn,bid):
+    bid = (bid,)
+    cur = conn.cursor()
+    cur.execute("SELECT bid FROM bids WHERE sid like ?;",bid)
+    all = cur.fetchall()
+    if (len(all)==0):
+        return False
+    sale = all[0]
+    if (sale == bid):
         return True
     else:
         return False
@@ -98,12 +111,14 @@ def listAllProductsWithSales( conn ):
     currentdate = datetime.now()
     inputs = ( currentdate, )
     cur = conn.cursor()
-    # cur.execute("select products.pid, products.descr, count(DISTINCT previews.pid), AVG(previews.rating) from sales, previews, products WHERE products.pid = previews.pid AND ( CAST(strftime('%s', ?)  AS  integer) <= CAST(strftime('%s', sales.edate)  AS  integer) );", inputs )
-    cur.execute("select products.pid, products.descr, count(DISTINCT previews.pid), AVG(previews.rating) from sales, previews, products WHERE products.pid = previews.pid AND products.pid IN (SELECT sales.pid FROM sales WHERE ( CAST(strftime('%s', ?)  AS  integer) <= CAST(strftime('%s', sales.edate)  AS  integer) ));", inputs)
+    # cur.execute("select products.pid, products.descr, count(DISTINCT previews.pid), AVG(previews.rating) from sales, previews, products WHERE products.pid = previews.pid AND products.pid IN (SELECT sales.pid FROM sales WHERE ( CAST(strftime('%s', ?)  AS  integer) <= CAST(strftime('%s', sales.edate)  AS  integer) ));", inputs)
+    cur.execute("select products.pid, products.descr, count(DISTINCT previews.pid), AVG(previews.rating) from previews left outer join products on products.pid = previews.pid AND products.pid IN (SELECT sales.pid FROM sales WHERE ( CAST(strftime('%s', ?)  AS  integer) <= CAST(strftime('%s', sales.edate)  AS  integer) ));", inputs)
+
     conn.commit()
     result = cur.fetchall()
     for row in result:
         print(row)
+    # print(result)
 
     return
 
@@ -210,6 +225,14 @@ def addUserReview( conn, rtext, rating, reviewer, reviewee ):
     cur.execute("insert into reviews values (?, ?, ?, ?, ?);", inputs)
     conn.commit()
 
+    return
+
+    ###finish this right now
+def addNewBid( conn, bid, bidder, sid, bdate, amount ):
+    inputs = (bid, bidder, sid, bdate, amount, )
+    cur = conn.cursor()
+    cur.execute("insert into bids values (?, ?, ?, ?, ?);", inputs)
+    conn.commit()
     return
 
 
