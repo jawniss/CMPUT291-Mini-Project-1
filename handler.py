@@ -191,7 +191,7 @@ class Handler():
             # replace the following line  
             # pid = function(self.conn, pid)
 
-            
+
             self.selectedproduct = pid
 
         self.clearandBasicInfo()
@@ -357,12 +357,16 @@ class Handler():
                 return
 
             try:
-                # pass
-                # checkUsernameExists(conn, keyword)
-                print(checkUsernameExists(self.conn, keyword))
+                # TODO query that selects all matching email, name or city, use the LIKE 
+                # function in the query. Then print everything that is a match
+
+
+                # checkUsernameExists(conn, keyword) is not good for this implementation
+                #print("user exists: "+checkUsernameExists(self.conn, keyword))
 
                 #select matching users
             except Error as e:
+                getpass(e)
                 #other error
                 return
             
