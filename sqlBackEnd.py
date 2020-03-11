@@ -42,7 +42,10 @@ def checkEmailExists( conn, name ):
     name = (name, )
     cur = conn.cursor()
     cur.execute("SELECT users.email FROM users WHERE email=?;", name)
- 
+
+    if(len(cur.fetchall()) == 0):
+        return False
+
     email = cur.fetchall()[0]
  
     if( name == email ):
