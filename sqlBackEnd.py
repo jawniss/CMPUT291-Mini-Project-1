@@ -163,7 +163,7 @@ def listProductReviews( conn, pid ):
 def searchSale(conn, keyword):
     keyword = (keyword,keyword, )
     cur = conn.cursor()
-    cur.execute("select sid, lister, s.pid, edate, s.descr, cond, rprice from sales s left outer join products p on s.pid = p.pid and (s.descr like ? OR p.descr like ?);", keyword)
+    cur.execute("select sid, lister, s.pid, edate, s.descr, cond, rprice from sales s left outer join products p on s.pid = p.pid where (s.descr like ? OR p.descr like ?);", keyword)
     conn.commit()
     result = cur.fetchall()
     for row in result:
@@ -224,10 +224,8 @@ def addUserReview( conn, rtext, rating, reviewer, reviewee ):
     cur = conn.cursor()
     cur.execute("insert into reviews values (?, ?, ?, ?, ?);", inputs)
     conn.commit()
-
     return
 
-    ###finish this right now
 def addNewBid( conn, bid, bidder, sid, bdate, amount ):
     inputs = (bid, bidder, sid, bdate, amount, )
     cur = conn.cursor()
