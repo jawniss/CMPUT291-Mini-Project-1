@@ -363,15 +363,7 @@ class Handler():
 
                 # checkUsernameExists(conn, keyword) is not good for this implementation
                 #print("user exists: "+checkUsernameExists(self.conn, keyword))
-<<<<<<< HEAD
-                # pass
-                # checkUsernameExists(conn, keyword)
-                # print(checkUsernameExists(self.conn, keyword))
                 searchUsers( self.conn, keyword )
-
-=======
-                searchUsers( self.conn, keyword )
->>>>>>> 29531069cc226dad24783fbf33b55bcb463a539e
                 #select matching users
             except Error as e:
                 getpass(e)
@@ -411,13 +403,7 @@ class Handler():
                 pass
                 #TODO query here
                 #select valid email
-                useremail = selectOneUser( self.conn, email )[0]
-                # useremail = ''.join(user)
-                print( useremail )
-                # characters_to_remove = "()',"
-                # for character in characters_to_remove:
-                #     useremail = useremail.replace(character, "")
-                # print( useremail )
+                useremail = selectOneUser( self.conn, email )
 
             except IntegrityError: 
                 print ("Invalid email")
@@ -479,7 +465,8 @@ class Handler():
     
     def listUserSales(self):
         self.clearandBasicInfo()
-        getpass("not implemented yet")
+        listSalesOfSelectedUser( self.conn, self.selecteduser )
+
         pass
         
     def listUserReviews(self):
