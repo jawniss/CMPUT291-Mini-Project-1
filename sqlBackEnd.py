@@ -220,8 +220,13 @@ def addUserReview( conn, rtext, rating, reviewer, reviewee ):
     return
 
 
-# def timeRemaining( edate, selecteduser ):
-
+def listActiveSalesOfProd(conn, pid):
+    currentdate = datetime.now()
+    inputs = (pid, currentdate, )
+    cur = conn.cursor()
+    cur.execute("SELECT s.sid, s.lister, s.pid, s.edate, s.descr, s.cond, s.rprice FROM sales s WHERE s.pid = ? AND ( CAST(strftime('%s', ?)  AS  integer) <= CAST(strftime('%s', s.edate)  AS  integer));", inputs)
+    conn.commit()
+    return
 
 
 

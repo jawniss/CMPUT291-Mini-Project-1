@@ -234,14 +234,15 @@ class Handler():
             else:
                 action =""
                 getpass("Invalid command. Press enter to try again.")
-
+    ###i believe we dont even use this yet our review writing works
     def writeProductReview(self):
         self.clearandBasicInfo()
         getpass("not implemented yet")
     
     def listProductSales(self):
         self.clearandBasicInfo()
-        getpass("not implemented yet")
+        listActiveSalesOfProd(self.conn, self.selectedproduct)
+
 
     def listProductReviews(self):
         self.clearandBasicInfo()
@@ -504,6 +505,33 @@ class Handler():
         
         pass
 
+    def placeBid(self):
+        self.clearandBasicInfo()
+        print("Enter the PID of product (optional):")
+        pid = input(self.prompt)
+
+        if pid == "":
+            pid = None
+        elif pid =="9":
+            return
+        edate = input("When would you like the sale to end?")
+
+        if edate == "9":
+            return
+        #here while (edate - current date) < 0, prompt them for a valid date
+        descr = input("What is the description of the item?\n")
+
+        #while (descr == "") ask them for a valid description
+        cond = input("What is the conditon of the item?\n")
+
+        #while (cond == "") ask them for a valid condition
+        rprice = input("What would you like the reserved price for your sale to be?\n")
+        if rprice == "":
+            rprice = 0
+        sid = 6942012 #fix this later as well, if you try to run it twice itll say that sid isnt unique, which it isnt
+        salePoster(self.conn, sid, self.email, pid, edate, descr, cond, rprice)
+        
+        # getpass("not implemented yet")
 
 
 
