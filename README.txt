@@ -1,6 +1,7 @@
 CMPUT 291 Mini Project 1
 
-Group: Andrew Wood, Johnas Wong, Rafaella Grana
+Name then (CCID)
+Group: Andrew Wood (awood), Johnas Wong (johnas), Rafaella Grana (graa)
 
 Step 1: Download our zip file from the eClass and unzip it
 
