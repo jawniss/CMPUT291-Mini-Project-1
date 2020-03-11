@@ -201,7 +201,7 @@ class Handler():
         print("Displaying information for Product ID: " +self.selectedproduct)
 
         showProductInfo( self.conn, self.selectedproduct )
-        
+
         print("TEMPORARY. IMAGINE PRODUCT INFO IS HERE\n")
         print("\nEnter the number of action to perform")
         print("1. Write a review on this product")
@@ -229,7 +229,7 @@ class Handler():
                 self.listProductSales()
                 return
             elif (action=="3"):
-                self.listProductReviews()
+                listProductReviews( self.conn, self.selectedproduct )
                 return
             else:
                 action =""

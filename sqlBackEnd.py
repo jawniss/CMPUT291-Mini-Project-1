@@ -110,6 +110,19 @@ def showProductInfo( conn, pid ):
     return
 
 
+def listProductReviews( conn, pid ):
+    tempproduct = '%' + pid + '%'
+    pid = ( tempproduct, )
+    cur = conn.cursor()
+    cur.execute( "SELECT * FROM previews WHERE (pid LIKE ?);", pid )    
+    conn.commit()
+    result = cur.fetchall()
+    for row in result:
+        print(row)
+    
+    return
+
+
 def searchSale(conn, keyword):
     keyword = (keyword,keyword, )
     cur = conn.cursor()
