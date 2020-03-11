@@ -104,6 +104,8 @@ class Handler():
                 print("Sorry, that email is already being used")
                 getpass("Press enter to try again")
 
+    # main loop, gives user access to all the functionalities
+    # asks for input and redirects to other methods
     def mainMenu(self):
         while(1):
             clear()
@@ -120,6 +122,8 @@ class Handler():
 
             if (selected=="1"):
                 self.listProducts()
+                #no return needed because after listproducts, we want the user to come
+                #back to main menu
             elif (selected =="2"):
                 self.searchSales()
             elif (selected=="3"):
@@ -131,25 +135,30 @@ class Handler():
                 sure = input(self.prompt)
                 if (sure =="y" or sure =="Y"):
                     self.selectLoginOption()
+                    # do not remove this return
                     return
             elif (selected == "6"):
                 print("Are you sure you want to quit? Y/N")
                 sure = input(self.prompt)
                 if (sure =="y" or sure =="Y"):
+                    #do not remove this return
                     return
             else:
                     getpass("Invalid command. Press enter to try again")
 
+    # useful function, can be expanded if we want to show more info about the user
     def clearandBasicInfo(self):
         clear()
         print("You are logged in as Username: "+self.email)
         print("Enter 9 at any time to go back to Main Menu\n")
         return
 
+    #shows all products and promts user to choose what to do next
     def listProducts(self):
         self.clearandBasicInfo()
         print("All Available Products:")
         print("TEMPORARY. IMAGINE THE AVAILABLE PRODUCTS HAVE BEEN DISPLAYED\n")
+        # TODO query the db for all products functionality 1
         print("Enter the number of action to perform")
         print("1. Select product")
         print("2. Select sale")
@@ -168,7 +177,7 @@ class Handler():
                 action =""
                 getpass("Invalid command. Press enter to try again.")
         
-    
+    # promts user to select a product based on its pid
     def selectProduct(self):
         pid=""
         while(pid==""):
@@ -176,21 +185,13 @@ class Handler():
             pid = input(self.prompt)
             if (pid=="9"):
                 return
-            try:
-                pass
-                #TODO query here
-                #select valid product
-                nomatch = False
-                if(nomatch):
-                    raise NoMatchError
-            except NoMatchError: 
-                print ("Invalid pid")
-                getpass("Press enter to try again.")
-                pid=""
-                continue
-            except Error as e:
-                #other error
-                return
+
+            #TODO write a function that returns a valid pid for the product
+            # or returns an empty string in case no product is found
+            # replace the following line  
+            # pid = function(self.conn, pid)
+
+            
             self.selectedproduct = pid
 
         self.clearandBasicInfo()
