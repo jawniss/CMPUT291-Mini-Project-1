@@ -476,7 +476,8 @@ class Handler():
         
     def listUserReviews(self):
         self.clearandBasicInfo()
-        getpass("not implemented yet")
+        listReviewsOfSelectedUser( self.conn, self.selecteduser )
+        
         pass
 
 

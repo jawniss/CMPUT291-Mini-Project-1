@@ -174,7 +174,7 @@ def listSalesOfSelectedUser( conn, selecteduser ):
     # timeRemaining( edate )
 
     email = '%' + selecteduser + '%'
-    inputs = ( currentdate, email, currentdate, )
+    inputs = ( email, currentdate, )
     cur = conn.cursor()
     cur.execute( "SELECT descr, amount FROM sales, bids WHERE (lister LIKE ? AND CAST(strftime('%s', ?)  AS  integer) <= CAST(strftime('%s', edate)  AS  integer) AND sales.sid = bids.sid );", inputs )    
     conn.commit()
@@ -187,3 +187,18 @@ def listSalesOfSelectedUser( conn, selecteduser ):
         result = cur.fetchall()
     for row in result:
         print(row)
+
+    return
+
+
+def listReviewsOfSelectedUser( conn, selecteduser ):
+    tempemail = '%' + selecteduser + '%'
+    useremail = ( tempemail, )
+    cur = conn.cursor()
+    cur.execute( "SELECT * FROM reviews WHERE (reviewee LIKE ?);", useremail )    
+    conn.commit()
+    result = cur.fetchall()
+    for row in result:
+        print(row)
+
+    return
