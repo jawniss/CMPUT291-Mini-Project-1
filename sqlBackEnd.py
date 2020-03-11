@@ -3,6 +3,8 @@ import sqlite3
 from sqlite3 import *
 from datetime import datetime
 
+import random
+
 # Create connection to the database file
 def create_connection( db_file ):
     """ create a database connection to the SQLite database
@@ -67,13 +69,58 @@ def addUser(conn, email, name, pwd, city, gender):
 
 
 def listAllProductsWithSales( conn ):
+    '''
+    For each qualifying product, list the product id, 
+    description, the number of reviews, the average rating 
+    and the number of active sales associated to the product.
+    '''
     currentdate = datetime.now()
+    inputs = ( currentdate, )
     cur = conn.cursor()
-    cur.execute("select sid, lister, s.pid, edate, s.descr, cond, rprice from sales s left outer join products p on s.pid = p.pid and (s.descr like ? OR p.descr like ?);", keyword)
+    cur.execute("select products.pid, products.descr, count(DISTINCT previews.pid), AVG(previews.rating) from sales, previews, products WHERE products.pid = previews.pid AND ( CAST(strftime('%s', ?)  AS  integer) <= CAST(strftime('%s', sales.edate)  AS  integer) );", inputs )
     conn.commit()
     result = cur.fetchall()
     for row in result:
         print(row)
+
+    return
+
+
+def addProductReview( conn, rtext, rating, reviewer, pid ):
+    rdate = datetime.today().strftime('%Y-%m-%d')
+    rid = random.randint(0, 10000)
+    inputs = ( rid, pid, reviewer, rating, rtext, rdate, )
+    cur = conn.cursor()
+    cur.execute("insert into previews values (?, ?, ?, ?, ?, ?);", inputs)
+    conn.commit()
+
+    return
+
+
+def showProductInfo( conn, pid ):
+    tempproduct = '%' + pid + '%'
+    pid = ( tempproduct, )
+    cur = conn.cursor()
+    cur.execute( "SELECT * FROM products WHERE (pid LIKE ?);", pid )    
+    conn.commit()
+    result = cur.fetchall()
+    for row in result:
+        print(row)
+
+    return
+
+
+def listProductReviews( conn, pid ):
+    tempproduct = '%' + pid + '%'
+    pid = ( tempproduct, )
+    cur = conn.cursor()
+    cur.execute( "SELECT * FROM previews WHERE (pid LIKE ?);", pid )    
+    conn.commit()
+    result = cur.fetchall()
+    for row in result:
+        print(row)
+    
+    return
 
 
 def searchSale(conn, keyword):
@@ -155,7 +202,7 @@ def showUserInfo( conn, useremail ):
 
 def addUserReview( conn, rtext, rating, reviewer, reviewee ):
     rdate = datetime.today().strftime('%Y-%m-%d')
-    inputs = ( reviewer, reviewee, rating, rtext, rdate )
+    inputs = ( reviewer, reviewee, rating, rtext, rdate, )
     cur = conn.cursor()
     cur.execute("insert into reviews values (?, ?, ?, ?, ?);", inputs)
     conn.commit()
@@ -163,14 +210,42 @@ def addUserReview( conn, rtext, rating, reviewer, reviewee ):
     return
 
 
+# def timeRemaining( edate, selecteduser ):
+
+
+
+
 def listSalesOfSelectedUser( conn, selecteduser ):
+    # need to change to follow point 3
     currentdate = datetime.now()
+    # timeRemaining( edate )
 
     email = '%' + selecteduser + '%'
-    inputs = ( email, currentdate )
+    inputs = ( email, currentdate, )
     cur = conn.cursor()
-    cur.execute( "SELECT * FROM sales WHERE (lister LIKE ? AND CAST(strftime('%s', ?)  AS  integer) <= CAST(strftime('%s', edate)  AS  integer) );", inputs )    
+    cur.execute( "SELECT descr, amount FROM sales, bids WHERE (lister LIKE ? AND CAST(strftime('%s', ?)  AS  integer) <= CAST(strftime('%s', edate)  AS  integer) AND sales.sid = bids.sid );", inputs )    
+    conn.commit()
+    result = cur.fetchall()
+    # print(len(result))
+
+    if len(result) == 0:
+        cur.execute( "SELECT descr, rprice FROM sales WHERE (lister LIKE ? AND CAST(strftime('%s', ?)  AS  integer) <= CAST(strftime('%s', edate)  AS  integer) );", inputs )    
+        conn.commit()
+        result = cur.fetchall()
+    for row in result:
+        print(row)
+
+    return
+
+
+def listReviewsOfSelectedUser( conn, selecteduser ):
+    tempemail = '%' + selecteduser + '%'
+    useremail = ( tempemail, )
+    cur = conn.cursor()
+    cur.execute( "SELECT * FROM reviews WHERE (reviewee LIKE ?);", useremail )    
     conn.commit()
     result = cur.fetchall()
     for row in result:
         print(row)
+
+    return
