@@ -3,7 +3,6 @@ from sqlite3 import Error
 from getpass import getpass #hidden input function
 from helper import *
 from sqlBackEnd import *
-from string import isdigit
 
 class Handler():
     def __init__(self):
@@ -315,7 +314,7 @@ class Handler():
     def showSale(self):
         self.clearandBasicInfo()
         print("Displaying information for sale: "+ self.selectedsale)
-        print("TEMPORARY. IMAGINE SALE INFORMATION IS BEING DISPLAYED")
+        print("TEMPORARY. IMAGINE SALE INFORMATION IS BEING DISPLAYED") #TODO display this 
         print("\nEnter the number of action to perform")
         print("1. Place a bid on this sale")
         print("2. List all active sales of this seller")
@@ -330,15 +329,15 @@ class Handler():
                 self.placeBid()
                 return
             elif(action=="2"):
-                self.selectedUser="lister of" +self.selectedsale
+                self.selecteduser="lister of" +self.selectedsale
                 self.listUserSales()
                 return
             elif (action=="3"):
-                self.selectedUser="lister of" +self.selectedsale
+                self.selecteduser="lister of" +self.selectedsale
                 self.listUserReviews()
                 return
             elif (action=="4"):
-                self.selectedUser="lister of" +self.selectedsale
+                self.selecteduser="lister of" +self.selectedsale
                 self.showUser()
                 return
             else:
@@ -367,25 +366,51 @@ class Handler():
             edate = input(self.prompt)
             # in this case it won't be possible to go back to menu using 9, since it could be 
             # a valid input for end date
-            elif edate.isdigit() and edate != "0":
+            if (edate.isdigit() and edate != "0"):
                 break
             else:
                 getpass("Please enter a positive number. Press enter to try again")
-    
-        #here while (edate - current date) < 0, prompt them for a valid date
-        descr = input("What is the description of the item?\n")
-
-        #while (descr == "") ask them for a valid description
-        cond = input("What is the conditon of the item?\n")
-
-        #while (cond == "") ask them for a valid condition
-        rprice = input("What would you like the reserved price for your sale to be?\n")
-        if rprice == "":
-            rprice = 0
-        sid = 6942012 #fix this later as well, if you try to run it twice itll say that sid isnt unique, which it isnt
+        #get description
+        while 1:
+            print("What is the description of the item?")
+            descr = input(self.prompt)
+            if descr=="9":
+                return
+            if descr == "":
+                getpass("Please enter a non-empty description")
+            else:
+                break
+        # get condition
+        while 1:
+            print("What is the condition of the item?")
+            cond = input(self.prompt)
+            if cond=="9":
+                return
+            if cond == "":
+                getpass("Please enter a non-empty condition")
+            else:
+                break
+        while 1:
+            print("(Optional) Enter the reserved price")
+            rprice = input(self.prompt)
+            # in this case it won't be possible to go back to menu using 9, since it could be 
+            # a valid input for reserved price
+            if rprice== "":
+                rprice = "0"
+            if rprice.isdigit():
+                break
+            else:
+                getpass("Please enter a positive number. Press enter to try again")
+        #randomly generate sale id
+        while 1:
+            sid = str(randomKey())
+            #check we accidentally didnt generate something that already exists
+            if not checkSaleExists(self.conn,sid):
+                break
         salePoster(self.conn, sid, self.email, pid, edate, descr, cond, rprice)
-        
-        # getpass("not implemented yet")
+        getpass("Sale posted successfully, press enter to see sale")
+        self.selectedsale = sid
+        self.showSale()
 
     def searchUsers(self):
         while(1):
