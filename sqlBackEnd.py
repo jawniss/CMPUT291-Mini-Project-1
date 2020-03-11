@@ -67,13 +67,21 @@ def addUser(conn, email, name, pwd, city, gender):
 
 
 def listAllProductsWithSales( conn ):
+    '''
+    For each qualifying product, list the product id, 
+    description, the number of reviews, the average rating 
+    and the number of active sales associated to the product.
+    '''
     currentdate = datetime.now()
+    inputs = ( currentdate, )
     cur = conn.cursor()
-    cur.execute("select sid, lister, s.pid, edate, s.descr, cond, rprice from sales s left outer join products p on s.pid = p.pid and (s.descr like ? OR p.descr like ?);", keyword)
+    cur.execute("select products.pid, products.descr, count(DISTINCT previews.pid), AVG(previews.rating) from sales, previews, products WHERE products.pid = previews.pid AND ( CAST(strftime('%s', ?)  AS  integer) <= CAST(strftime('%s', sales.edate)  AS  integer) );", inputs )
     conn.commit()
     result = cur.fetchall()
     for row in result:
         print(row)
+
+    return
 
 
 def searchSale(conn, keyword):

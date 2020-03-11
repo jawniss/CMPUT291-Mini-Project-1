@@ -157,6 +157,7 @@ class Handler():
     def listProducts(self):
         self.clearandBasicInfo()
         print("All Available Products:")
+        listAllProductsWithSales( self.conn )
         print("TEMPORARY. IMAGINE THE AVAILABLE PRODUCTS HAVE BEEN DISPLAYED\n")
         # TODO query the db for all products functionality 1
         print("Enter the number of action to perform")
