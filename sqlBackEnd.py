@@ -151,25 +151,6 @@ def salePoster(conn, sid, lister, pid, edate, descr, cond, rprice):
     conn.commit()
     return
 
-
-def checkUsernameExists(conn, email ):
-    """
-    Query tasks by priority
-    :param conn: the Connection object
-    :param priority:
-    :return:
-    """
-    email = (email, )
-    cur = conn.cursor()
-    cur.execute("SELECT email FROM users WHERE email=?;", email)
- 
-    existingEmail = cur.fetchall()
- 
-    if( email == existingEmail ):
-        return True
-    else:
-        return False
-
 def searchUsers( conn, keyword ):
     tempkeyword = '%' + keyword + '%'
     keyword = ( tempkeyword, tempkeyword, )

@@ -3,6 +3,7 @@ from sqlite3 import Error
 from getpass import getpass #hidden input function
 from helper import *
 from sqlBackEnd import *
+from string import isdigit
 
 class Handler():
     def __init__(self):
@@ -346,17 +347,31 @@ class Handler():
 
     def postSale(self):
         self.clearandBasicInfo()
-        print("Enter the PID of product (optional):")
-        pid = input(self.prompt)
+        #get pid
+        while 1:
+            print("Enter the PID of product (optional):")
+            pid = input(self.prompt)
 
-        if pid == "":
-            pid = None
-        elif pid =="9":
-            return
-        edate = input("When would you like the sale to end?")
-
-        if edate == "9":
-            return
+            if pid == "":
+                pid = None
+                break
+            elif pid =="9":
+                return
+            elif not checkProductExists(self.conn,pid):
+                getpass("Product does not exist. press enter to try again")
+            else:
+                break
+        #get end date
+        while 1:
+            print("Please enter the number of days you would like this sale to go on for")
+            edate = input(self.prompt)
+            # in this case it won't be possible to go back to menu using 9, since it could be 
+            # a valid input for end date
+            elif edate.isdigit() and edate != "0":
+                break
+            else:
+                getpass("Please enter a positive number. Press enter to try again")
+    
         #here while (edate - current date) < 0, prompt them for a valid date
         descr = input("What is the description of the item?\n")
 
@@ -386,12 +401,6 @@ class Handler():
                 # TODO query that selects all matching email, name or city, use the LIKE 
                 # function in the query. Then print everything that is a match
 
-
-                # checkUsernameExists(conn, keyword) is not good for this implementation
-                #print("user exists: "+checkUsernameExists(self.conn, keyword))
-                # pass
-                # checkUsernameExists(conn, keyword)
-                # print(checkUsernameExists(self.conn, keyword))
                 searchUsers( self.conn, keyword )
 
                 #select matching users
