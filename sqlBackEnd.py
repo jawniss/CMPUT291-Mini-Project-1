@@ -1,6 +1,7 @@
 # https://www.sqlitetutorial.net/sqlite-python/sqlite-python-select/
 import sqlite3
 from sqlite3 import *
+from datetime import datetime
 
 # Create connection to the database file
 def create_connection( db_file ):
@@ -48,24 +49,6 @@ def checkEmailExists( conn, name ):
         return True
     else:
         return False
-
-### i dont think this makes any sense to have??? unless i'm missing something
-# def checkPasswordExists( conn, password ):
-#     """
-#     Query tasks by priority
-#     :param conn: the Connection object
-#     :param priority:
-#     :return:
-#     """
-#     cur = conn.cursor()
-#     cur.execute("SELECT user.password FROM users WHERE password=?", ( password, ))
- 
-#     userPassword = cur.fetchall()
- 
-#     if( userPassword == password ):
-#         return true
-#     else:
-#         return false
 
 
 def addUser(conn, email, name, pwd, city, gender):
@@ -152,5 +135,21 @@ def showUserInfo( conn, useremail ):
     result = cur.fetchall()
     for row in result:
         print(row)
+
+    return
+
+
+def addUserReview( conn, rtext, rating, reviewer, reviewee ):
+    print("3")
+    rdate = datetime.today().strftime('%Y-%m-%d')
+    print("4")
+    inputs = ( reviewer, reviewee, rating, rtext, rdate )
+    print("5")
+    cur = conn.cursor()
+    print("6")
+    cur.execute("insert into reviews values (?, ?, ?, ?, ?);", inputs)
+    print("7")
+    conn.commit()
+    print("8")
 
     return

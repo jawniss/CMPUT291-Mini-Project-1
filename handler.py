@@ -448,7 +448,18 @@ class Handler():
 
     def writeUserReview(self):
         self.clearandBasicInfo()
-        getpass("not implemented yet")
+        # getpass("not implemented yet")
+        validrtext = False
+        while not validrtext:
+            rtext = ""
+            rtext = input( "Please input your review text (20 characters or less)" )
+            if len( rtext ) <= 20:
+                validrtext = True
+            else:
+                print( "Review too long, please try again" )
+            # later can put an if thing saying pls try again
+        rating = float(input( "Please input your rating (1-5)"))
+        addUserReview( self.conn, rtext, rating, self.email, self.selecteduser )
 
         pass
     
